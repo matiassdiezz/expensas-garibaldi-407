@@ -10,12 +10,23 @@ interface SummaryCardsProps {
 }
 
 export function SummaryCards({ data }: SummaryCardsProps) {
-  const totalAnual = data.reduce((sum, m) => sum + m.total, 0);
-  const promedio = totalAnual / data.length;
+  const totalEgresos = data.reduce((sum, m) => sum + m.total, 0);
+  const promedioEgresos = totalEgresos / data.length;
 
+  // Variación expensas A (prorrateo) primer vs último mes
+  const expensasAFirst = data[0].expensasA;
+  const expensasALast = data[data.length - 1].expensasA;
+  const variacionExpensasA = getMonthOverMonthChange(expensasALast, expensasAFirst);
+
+  // Variación UF Diez
+  const ufDiezFirst = data[0].ufDiez;
+  const ufDiezLast = data[data.length - 1].ufDiez;
+  const variacionUfDiez = getMonthOverMonthChange(ufDiezLast, ufDiezFirst);
+
+  // Mes con mayor gasto
   const mesMasCaro = data.reduce((max, m) => (m.total > max.total ? m : max), data[0]);
 
-  // Variación máxima mes a mes
+  // Mayor variación mes a mes en egresos
   let maxVariacion = 0;
   let maxVariacionLabel = "";
   for (let i = 1; i < data.length; i++) {
@@ -26,24 +37,18 @@ export function SummaryCards({ data }: SummaryCardsProps) {
     }
   }
 
-  // Variación primer mes vs último
-  const variacionTotal =
-    data.length > 1
-      ? getMonthOverMonthChange(data[data.length - 1].total, data[0].total)
-      : 0;
-
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">
-            Total Acumulado
+            Total Egresos ({data.length} meses)
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold font-mono">{formatCurrency(totalAnual)}</div>
+          <div className="text-2xl font-bold font-mono">{formatCurrency(totalEgresos)}</div>
           <p className="text-xs text-muted-foreground mt-1">
-            {data.length} meses analizados
+            Promedio: {formatCurrency(promedioEgresos)}/mes
           </p>
         </CardContent>
       </Card>
@@ -51,16 +56,18 @@ export function SummaryCards({ data }: SummaryCardsProps) {
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">
-            Promedio Mensual
+            Expensas Ordinarias (A)
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold font-mono">{formatCurrency(promedio)}</div>
+          <div className="text-2xl font-bold font-mono">{formatCurrency(expensasALast)}</div>
           <div className="flex items-center gap-1 mt-1">
-            <Badge variant={variacionTotal > 0 ? "destructive" : "secondary"} className="text-xs">
-              {formatPercent(variacionTotal)}
+            <Badge variant={variacionExpensasA > 0 ? "destructive" : "secondary"} className="text-xs">
+              {formatPercent(variacionExpensasA)}
             </Badge>
-            <span className="text-xs text-muted-foreground">primer → último mes</span>
+            <span className="text-xs text-muted-foreground">
+              desde {formatCurrency(expensasAFirst)}
+            </span>
           </div>
         </CardContent>
       </Card>
@@ -68,28 +75,31 @@ export function SummaryCards({ data }: SummaryCardsProps) {
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">
-            Mes Más Caro
+            Tu Expensa (UF 26 · 6.4%)
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold font-mono">{formatCurrency(ufDiezLast)}</div>
+          <div className="flex items-center gap-1 mt-1">
+            <Badge variant={variacionUfDiez > 0 ? "destructive" : "secondary"} className="text-xs">
+              {formatPercent(variacionUfDiez)}
+            </Badge>
+            <span className="text-xs text-muted-foreground">
+              desde {formatCurrency(ufDiezFirst)}
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">
+            Mes Más Caro (egresos)
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold font-mono">{formatCurrency(mesMasCaro.total)}</div>
           <p className="text-xs text-muted-foreground mt-1">{mesMasCaro.label}</p>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">
-            Mayor Variación
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold font-mono">
-            <span className={maxVariacion > 20 ? "text-destructive" : ""}>
-              {formatPercent(maxVariacion)}
-            </span>
-          </div>
-          <p className="text-xs text-muted-foreground mt-1">{maxVariacionLabel}</p>
         </CardContent>
       </Card>
     </div>

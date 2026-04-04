@@ -17,10 +17,13 @@ export default function Home() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
-            Expensas Garibaldi 407
+            Expensas Garibaldi 407/411
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Análisis de gastos · {firstMonth} – {lastMonth} · {data.length} meses
+            Consorcio de Propietarios · San Isidro · Administración Andrade
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {firstMonth} – {lastMonth} · {data.length} liquidaciones
           </p>
         </div>
 
@@ -29,10 +32,13 @@ export default function Home() {
 
         <Separator className="my-8" />
 
-        {/* Charts */}
+        {/* Charts row */}
         <div className="grid gap-6 lg:grid-cols-2">
           <MonthlyChart data={data} />
-          <CategoryChart data={data} />
+          <div className="space-y-6">
+            <CategoryChart data={data} />
+            <MonthComparison data={data} />
+          </div>
         </div>
 
         <Separator className="my-8" />
@@ -40,16 +46,11 @@ export default function Home() {
         {/* Detail table */}
         <ExpenseTable data={data} />
 
-        <Separator className="my-8" />
-
-        {/* Comparator */}
-        <MonthComparison data={data} />
-
         {/* Footer */}
         <div className="mt-12 pb-8 text-center text-xs text-muted-foreground">
-          Datos extraídos de las liquidaciones de expensas oficiales.
+          Datos extraídos de las liquidaciones oficiales de Andrade Inmobiliaria.
           <br />
-          Si encontrás errores, contactá a la administración.
+          Garibaldi 407/411, San Isidro · CUIT 30-71434946-1
         </div>
       </div>
     </main>
