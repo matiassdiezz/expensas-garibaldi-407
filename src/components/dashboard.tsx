@@ -11,6 +11,7 @@ import { CategorySummary } from "@/components/category-summary";
 import { ExpenseTable } from "@/components/expense-table";
 import { MonthComparison } from "@/components/month-comparison";
 import { UnitSelector } from "@/components/unit-selector";
+import { Forecast } from "@/components/forecast";
 import { AdminNotices } from "@/components/admin-notices";
 import { Benchmark } from "@/components/benchmark";
 import { Separator } from "@/components/ui/separator";
@@ -69,6 +70,11 @@ export function Dashboard() {
         />
         <ExpenseTable data={data} categoryFilter={categoryFilter} />
       </div>
+
+      <Separator className="my-8" />
+
+      {/* Forecast */}
+      <Forecast data={data} unitPercent={selectedUnit.percent} />
 
       <Separator className="my-8" />
 
