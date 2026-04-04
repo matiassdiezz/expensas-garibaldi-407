@@ -1,10 +1,24 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { notices } from "@/lib/notices";
+import liquidacionesRaw from "@/lib/liquidaciones.json";
 import { expensasData } from "@/lib/data";
 import { formatCurrency, getMonthOverMonthChange, formatPercent } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+
+const liquidaciones = liquidacionesRaw.liquidaciones as Array<{
+  liquidacion: string;
+  periodo: string;
+  aviso: string | null;
+}>;
+
+const notices = liquidaciones
+  .filter((l) => l.aviso)
+  .map((l) => ({
+    month: l.liquidacion,
+    label: l.periodo,
+    text: l.aviso!,
+  }));
 
 export function AdminNotices() {
   return (
