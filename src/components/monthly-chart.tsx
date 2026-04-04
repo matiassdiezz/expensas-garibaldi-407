@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MonthData } from "@/types/expense";
 import { formatCurrency } from "@/lib/utils";
+import { useMobile } from "@/lib/use-mobile";
 import {
   LineChart,
   Line,
@@ -22,6 +23,8 @@ interface MonthlyChartProps {
 }
 
 export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
+  const isMobile = useMobile();
+
   // Últimos 6 meses — los más recientes siempre visibles
   const recent = data.slice(-6);
   const chartData = recent.map((m) => ({
@@ -37,25 +40,36 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
         <CardHeader>
           <CardTitle className="text-base">Egresos vs Expensas Cobradas</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="h-[220px] sm:h-[300px] overflow-hidden">
+        <CardContent className="min-w-0">
+          <div className="h-[220px] min-w-0 sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ left: -10, right: 0 }}>
+              <BarChart
+                data={chartData}
+                barCategoryGap={isMobile ? "18%" : "24%"}
+                margin={{
+                  top: 8,
+                  right: isMobile ? 6 : 12,
+                  bottom: 0,
+                  left: isMobile ? 0 : 4,
+                }}
+              >
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 10%)" />
                 <XAxis
                   dataKey="name"
                   stroke="oklch(0.7 0 0)"
-                  fontSize={11}
+                  fontSize={isMobile ? 10 : 11}
                   tickLine={false}
                   axisLine={false}
-                  padding={{ left: 15, right: 15 }}
+                  tickMargin={6}
+                  padding={{ left: isMobile ? 8 : 15, right: isMobile ? 8 : 15 }}
                 />
                 <YAxis
                   stroke="oklch(0.7 0 0)"
-                  fontSize={10}
+                  fontSize={isMobile ? 9 : 10}
                   tickLine={false}
                   axisLine={false}
-                  width={45}
+                  tickMargin={6}
+                  width={isMobile ? 34 : 45}
                   tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`}
                 />
                 <Tooltip
@@ -69,7 +83,11 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
                   labelStyle={{ color: "oklch(0.7 0 0)" }}
                 />
                 <Legend
-                  wrapperStyle={{ fontSize: "11px" }}
+                  iconSize={isMobile ? 8 : 10}
+                  wrapperStyle={{
+                    fontSize: isMobile ? "10px" : "11px",
+                    paddingTop: isMobile ? "8px" : "12px",
+                  }}
                 />
                 <Bar
                   dataKey="egresos"
@@ -79,7 +97,7 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
                 />
                 <Bar
                   dataKey="expensasA"
-                  name="Exp. A cobradas"
+                  name={isMobile ? "Exp. A" : "Exp. A cobradas"}
                   fill="oklch(0.65 0.15 250)"
                   radius={[4, 4, 0, 0]}
                 />
@@ -93,24 +111,35 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
         <CardHeader>
           <CardTitle className="text-base">Tu Expensa ({unitPercent}%)</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="h-[160px] sm:h-[200px] overflow-hidden">
+        <CardContent className="min-w-0">
+          <div className="h-[160px] min-w-0 sm:h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData} margin={{ left: -10, right: 0 }}>
+              <LineChart
+                data={chartData}
+                margin={{
+                  top: 8,
+                  right: isMobile ? 6 : 12,
+                  bottom: 0,
+                  left: isMobile ? 0 : 4,
+                }}
+              >
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 10%)" />
                 <XAxis
                   dataKey="name"
                   stroke="oklch(0.7 0 0)"
-                  fontSize={12}
+                  fontSize={isMobile ? 10 : 12}
                   tickLine={false}
                   axisLine={false}
-                  padding={{ left: 15, right: 15 }}
+                  tickMargin={6}
+                  padding={{ left: isMobile ? 8 : 15, right: isMobile ? 8 : 15 }}
                 />
                 <YAxis
                   stroke="oklch(0.7 0 0)"
-                  fontSize={11}
+                  fontSize={isMobile ? 9 : 11}
                   tickLine={false}
                   axisLine={false}
+                  tickMargin={6}
+                  width={isMobile ? 34 : 44}
                   tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
@@ -128,9 +157,9 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
                   dataKey="tuExpensa"
                   name="Tu expensa"
                   stroke="oklch(0.7 0.2 160)"
-                  strokeWidth={2.5}
-                  dot={{ fill: "oklch(0.7 0.2 160)", r: 4 }}
-                  activeDot={{ r: 6 }}
+                  strokeWidth={isMobile ? 2.25 : 2.5}
+                  dot={{ fill: "oklch(0.7 0.2 160)", r: isMobile ? 3 : 4 }}
+                  activeDot={{ r: isMobile ? 5 : 6 }}
                 />
               </LineChart>
             </ResponsiveContainer>
