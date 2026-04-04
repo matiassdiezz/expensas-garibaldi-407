@@ -43,7 +43,7 @@ export function BalanceTracker({ data }: BalanceTrackerProps) {
     const extras = liq?.cashFlow.extras ?? [];
 
     return {
-      name: m.label.split(" ")[0].slice(0, 3),
+      name: `${m.label.split(" ")[0].slice(0, 3)} ${m.label.split(" ")[1]?.slice(2) ?? ""}`,
       fullLabel: m.label,
       cobrado,
       gastado,
