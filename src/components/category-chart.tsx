@@ -37,7 +37,7 @@ export function CategoryChart({ data }: CategoryChartProps) {
       <CardContent>
         <div className="h-[220px] sm:h-[300px] overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData} layout="vertical" margin={{ right: 20 }}>
+            <BarChart data={chartData} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 10%)" horizontal={false} />
               <XAxis
                 type="number"
@@ -46,6 +46,7 @@ export function CategoryChart({ data }: CategoryChartProps) {
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
+                padding={{ right: 20 }}
               />
               <YAxis
                 type="category"
