@@ -1,0 +1,497 @@
+{
+  "_meta": {
+    "edificio": "Consorcio de Propietarios Garibaldi 407/411, San Isidro",
+    "cuit": "30-71434946-1",
+    "clave_suterh": "655013",
+    "codigo": "13",
+    "administracion": "Andrade Inmobiliaria (Pablo Andrade)",
+    "matricula": "1442 RPAC",
+    "banco": "CREDICOOP, Av. Centenario 675, San Isidro",
+    "cbu": "1910223655022300649732",
+    "cuenta": "191-223-006497/3",
+    "telefono": "15-5896-6225",
+    "email": "andradeinmobiliaria@gmail.com",
+    "direccion_oficina": "Alsina 450, San Isidro",
+    "horarios": "Lunes a Viernes 9:30 a 12:30HS",
+    "telefonos_urgencias": {
+      "desobstrucciones": "SR. CAMILO FERREIRA 15-5429-4510",
+      "porton_electrico": "NORTEL PORTONES 15-4448-8098 (SR. MARIO)",
+      "ascensores": "VIRS SRL 15-6360-1001 / 15-6304-4110"
+    },
+    "parsed_at": "2026-04-04",
+    "nota": "Cada liquidación YYYY-MM cubre el periodo del mes anterior. Ej: 2025-07 = egresos de Junio 2025, vencimiento 10 Julio 2025"
+  },
+  "liquidaciones": [
+    {
+      "liquidacion": "2025-03",
+      "periodo": "Febrero 2025",
+      "vencimiento": "2025-03-10",
+      "cashFlow": {
+        "saldoAnterior": 469773.15,
+        "saldoAnteriorFecha": "2025-01-31",
+        "ingresos": 2594340.00,
+        "egresos": 2240951.11,
+        "extras": [],
+        "saldoFinal": 823162.04
+      },
+      "prorrateo": {
+        "expensasA": 2000000,
+        "expensasB": 0,
+        "totalAPagar": 2000000.00
+      },
+      "egresos": {
+        "total": 2240951.11,
+        "secciones": {
+          "A_sueldos": 251099.00,
+          "B_cargas_sociales": 181816.13,
+          "C_servicios_publicos": 753095.59,
+          "D_abonos_servicios": 738486.78,
+          "E_mantenimiento": 0,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 61768.61,
+          "H_seguros_gastos": 154685.00,
+          "I_administracion": 100000.00
+        }
+      },
+      "aviso": "Se normalizaron las facturas de AySA y llegaron los créditos por lo que se pagó en exceso y la refacturación de las facturas. Comenzaremos con obras de mantenimiento necesarias en el edificio para evitar que siga deteriorándose y evitar problemas."
+    },
+    {
+      "liquidacion": "2025-05",
+      "periodo": "Abril 2025",
+      "vencimiento": "2025-05-10",
+      "cashFlow": {
+        "saldoAnterior": 1512959.83,
+        "saldoAnteriorFecha": "2025-03-31",
+        "ingresos": 2038175.00,
+        "egresos": 2540596.75,
+        "extras": [],
+        "saldoFinal": 1010538.08
+      },
+      "prorrateo": {
+        "expensasA": 3400000,
+        "expensasB": 0,
+        "totalAPagar": 3305000.00
+      },
+      "egresos": {
+        "total": 2540596.75,
+        "secciones": {
+          "A_sueldos": 303004.00,
+          "B_cargas_sociales": 221470.36,
+          "C_servicios_publicos": 238347.27,
+          "D_abonos_servicios": 889895.69,
+          "E_mantenimiento": 559929.81,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 65904.93,
+          "H_seguros_gastos": 162044.69,
+          "I_administracion": 100000.00
+        }
+      },
+      "aviso": null
+    },
+    {
+      "liquidacion": "2025-06",
+      "periodo": "Mayo 2025",
+      "vencimiento": "2025-06-10",
+      "cashFlow": {
+        "saldoAnterior": 1010538.08,
+        "saldoAnteriorFecha": "2025-04-30",
+        "ingresos": 3305000.00,
+        "egresos": 3842839.27,
+        "extras": [],
+        "saldoFinal": 472698.81
+      },
+      "prorrateo": {
+        "expensasA": 3400000,
+        "expensasB": 0,
+        "totalAPagar": 3400000.00
+      },
+      "egresos": {
+        "total": 3842839.27,
+        "secciones": {
+          "A_sueldos": 303004.00,
+          "B_cargas_sociales": 221546.36,
+          "C_servicios_publicos": 1035450.39,
+          "D_abonos_servicios": 895177.19,
+          "E_mantenimiento": 1044222.72,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 79910.41,
+          "H_seguros_gastos": 163528.20,
+          "I_administracion": 100000.00
+        }
+      },
+      "aviso": null
+    },
+    {
+      "liquidacion": "2025-07",
+      "periodo": "Junio 2025",
+      "vencimiento": "2025-07-10",
+      "cashFlow": {
+        "saldoAnterior": 472698.81,
+        "saldoAnteriorFecha": "2025-05-31",
+        "ingresos": 3278960.00,
+        "egresos": 3914530.73,
+        "extras": [
+          {
+            "tipo": "prestamo_administracion",
+            "monto": 165000.00,
+            "descripcion": "Préstamo de la administración para cubrir falta de fondos"
+          }
+        ],
+        "saldoFinal": 2128.08
+      },
+      "prorrateo": {
+        "expensasA": 2800000,
+        "expensasB": 0,
+        "totalAPagar": 2928302.00
+      },
+      "egresos": {
+        "total": 3914530.73,
+        "secciones": {
+          "A_sueldos": 487433.00,
+          "B_cargas_sociales": 221598.36,
+          "C_servicios_publicos": 0,
+          "D_abonos_servicios": 904833.12,
+          "E_mantenimiento": 1935164.75,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 99744.85,
+          "H_seguros_gastos": 165756.65,
+          "I_administracion": 100000.00
+        }
+      },
+      "aviso": null
+    },
+    {
+      "liquidacion": "2025-08",
+      "periodo": "Julio 2025 (rectificativa 1)",
+      "vencimiento": "2025-08-10",
+      "cashFlow": {
+        "saldoAnterior": 2128.08,
+        "saldoAnteriorFecha": "2025-06-30",
+        "ingresos": 2883822.00,
+        "egresos": 1494046.54,
+        "extras": [
+          {
+            "tipo": "reintegro_prestamo",
+            "monto": -165000.00,
+            "descripcion": "Reintegro préstamo de la administración por falta de fondos"
+          }
+        ],
+        "saldoFinal": 1226903.54
+      },
+      "prorrateo": {
+        "expensasA": 2700000,
+        "expensasB": 0,
+        "totalAPagar": 2802571.00
+      },
+      "egresos": {
+        "total": 1494046.54,
+        "secciones": {
+          "A_sueldos": 303004.00,
+          "B_cargas_sociales": 356297.02,
+          "C_servicios_publicos": 0,
+          "D_abonos_servicios": 468795.21,
+          "E_mantenimiento": 120000.00,
+          "F_reparaciones": 20000.00,
+          "G_gastos_bancarios": 96332.32,
+          "H_seguros_gastos": 29617.99,
+          "I_administracion": 100000.00
+        }
+      },
+      "aviso": "Se normalizaron las facturas de AySA y llegaron los créditos por lo que se pagó en exceso y la refacturación. Comenzaremos con obras de mantenimiento necesarias. Este mes se hará una reparación del portón de garaje que venía con algunos inconvenientes en su funcionamiento."
+    },
+    {
+      "liquidacion": "2025-09",
+      "periodo": "Agosto 2025 (rectificativa 1)",
+      "vencimiento": "2025-09-10",
+      "cashFlow": {
+        "saldoAnterior": 1226903.54,
+        "saldoAnteriorFecha": "2025-07-31",
+        "ingresos": 2877571.00,
+        "egresos": 2589246.24,
+        "extras": [],
+        "saldoFinal": 1515228.30
+      },
+      "prorrateo": {
+        "expensasA": 2700000,
+        "expensasB": 0,
+        "totalAPagar": 2400080.00
+      },
+      "egresos": {
+        "total": 2589246.24,
+        "secciones": {
+          "A_sueldos": 309908.00,
+          "B_cargas_sociales": 226725.52,
+          "C_servicios_publicos": 199817.46,
+          "D_abonos_servicios": 470427.38,
+          "E_mantenimiento": 1057600.00,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 81923.76,
+          "H_seguros_gastos": 42844.12,
+          "I_administracion": 200000.00
+        }
+      },
+      "aviso": "Se continúan con las obras en el edificio, esperamos poder ir acondicionando lo mejor posible todo como para empezar a cambiar el aspecto del edificio en general. Este mes se hará una reparación del portón de garaje que venía con algunos inconvenientes en su funcionamiento."
+    },
+    {
+      "liquidacion": "2025-10",
+      "periodo": "Septiembre 2025",
+      "vencimiento": "2025-10-10",
+      "cashFlow": {
+        "saldoAnterior": 1515228.30,
+        "saldoAnteriorFecha": "2025-08-31",
+        "ingresos": 2624200.00,
+        "egresos": 3629453.72,
+        "extras": [],
+        "saldoFinal": 509974.58
+      },
+      "prorrateo": {
+        "expensasA": 2600000,
+        "expensasB": 0,
+        "totalAPagar": 2575928.00
+      },
+      "egresos": {
+        "total": 3629453.72,
+        "secciones": {
+          "A_sueldos": 313699.00,
+          "B_cargas_sociales": 229544.58,
+          "C_servicios_publicos": 1038820.39,
+          "D_abonos_servicios": 521614.93,
+          "E_mantenimiento": 1018553.13,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 102386.86,
+          "H_seguros_gastos": 204834.83,
+          "I_administracion": 200000.00
+        }
+      },
+      "aviso": "Se continúan con las obras en el edificio, este mes se estará arreglando los palieres internos del primer cuerpo del edificio, por lo tanto rogamos disculpar las molestias ocasionadas."
+    },
+    {
+      "liquidacion": "2025-11",
+      "periodo": "Octubre 2025",
+      "vencimiento": "2025-11-10",
+      "cashFlow": {
+        "saldoAnterior": 509974.58,
+        "saldoAnteriorFecha": "2025-09-30",
+        "ingresos": 2696680.00,
+        "egresos": 2032702.50,
+        "extras": [],
+        "saldoFinal": 1173952.08
+      },
+      "prorrateo": {
+        "expensasA": 2600000,
+        "expensasB": 0,
+        "totalAPagar": 2479248.00
+      },
+      "egresos": {
+        "total": 2032702.50,
+        "secciones": {
+          "A_sueldos": 318643.00,
+          "B_cargas_sociales": 233212.06,
+          "C_servicios_publicos": 491245.13,
+          "D_abonos_servicios": 495275.97,
+          "E_mantenimiento": 0,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 89491.51,
+          "H_seguros_gastos": 204834.83,
+          "I_administracion": 200000.00
+        }
+      },
+      "aviso": "Se continúan con las obras en el edificio, este mes se estará arreglando los palieres internos del segundo cuerpo del edificio, por lo tanto rogamos disculpar las molestias ocasionadas."
+    },
+    {
+      "liquidacion": "2025-12",
+      "periodo": "Noviembre 2025",
+      "vencimiento": "2025-12-10",
+      "cashFlow": {
+        "saldoAnterior": 1173952.08,
+        "saldoAnteriorFecha": "2025-10-31",
+        "ingresos": 2343008.00,
+        "egresos": 2806922.76,
+        "extras": [],
+        "saldoFinal": 710037.32
+      },
+      "prorrateo": {
+        "expensasA": 2600000,
+        "expensasB": 0,
+        "totalAPagar": 2744414.00
+      },
+      "egresos": {
+        "total": 2806922.76,
+        "secciones": {
+          "A_sueldos": 337037.00,
+          "B_cargas_sociales": 246815.29,
+          "C_servicios_publicos": 436243.86,
+          "D_abonos_servicios": 502209.84,
+          "E_mantenimiento": 968043.25,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 90730.32,
+          "H_seguros_gastos": 25843.20,
+          "I_administracion": 200000.00
+        }
+      },
+      "aviso": "Se continúan con las obras en el edificio, este mes se estará arreglando los palieres internos del segundo cuerpo del edificio, por lo tanto rogamos disculpar las molestias ocasionadas."
+    },
+    {
+      "liquidacion": "2026-01",
+      "periodo": "Diciembre 2025",
+      "vencimiento": "2026-01-10",
+      "cashFlow": {
+        "saldoAnterior": 710037.32,
+        "saldoAnteriorFecha": "2025-11-30",
+        "ingresos": 2750000.00,
+        "egresos": 2832591.17,
+        "extras": [],
+        "saldoFinal": 627446.15
+      },
+      "prorrateo": {
+        "expensasA": 2600000,
+        "expensasB": 0,
+        "totalAPagar": 2403079.00
+      },
+      "egresos": {
+        "total": 2832591.17,
+        "secciones": {
+          "A_sueldos": 551517.00,
+          "B_cargas_sociales": 250333.91,
+          "C_servicios_publicos": 436243.86,
+          "D_abonos_servicios": 616700.24,
+          "E_mantenimiento": 650000.00,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 101952.96,
+          "H_seguros_gastos": 25843.20,
+          "I_administracion": 200000.00
+        }
+      },
+      "aviso": "Con el corte de luz se rompió la caja de operador del ascensor del segundo cuerpo, asimismo se encargó la reparación de la vereda. Y también se debe abonar este mes la suplencia del personal de limpieza. Por eso fue necesario hacer un ajuste en el valor de las expensas para poder llegar con los gastos."
+    },
+    {
+      "liquidacion": "2026-02",
+      "periodo": "Enero 2026",
+      "vencimiento": "2026-02-10",
+      "cashFlow": {
+        "saldoAnterior": 627446.15,
+        "saldoAnteriorFecha": "2025-12-31",
+        "ingresos": 2804179.00,
+        "egresos": 3259227.41,
+        "extras": [],
+        "saldoFinal": 172397.74
+      },
+      "prorrateo": {
+        "expensasA": 3100000,
+        "expensasB": 0,
+        "totalAPagar": 2898900.00
+      },
+      "egresos": {
+        "total": 3259227.41,
+        "secciones": {
+          "A_sueldos": 341804.00,
+          "B_cargas_sociales": 426444.53,
+          "C_servicios_publicos": 379306.08,
+          "D_abonos_servicios": 660016.42,
+          "E_mantenimiento": 784390.00,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 106097.70,
+          "H_seguros_gastos": 341168.68,
+          "I_administracion": 220000.00
+        }
+      },
+      "aviso": "El consorcio está con muchos gastos de mantenimiento en simultáneo. Se realizó tareas de recambio de las lámparas internas de luz (Dulux) por LEDs que iluminan más y gastan menos. Se cambiaron las luces de emergencias que tenían las baterías agotadas. Se limpiaron los plafones y se cambiaron las lámparas quemadas. Se cambiaron las luces dicroicas comunes por luces dicroicas LED de 220V. La idea es continuar con la pintura de espacios comunes y esperamos pronto encarar la pintura del frente del edificio para que la fachada esté en condiciones."
+    },
+    {
+      "liquidacion": "2026-03",
+      "periodo": "Febrero 2026",
+      "vencimiento": "2026-03-10",
+      "cashFlow": {
+        "saldoAnterior": 172397.74,
+        "saldoAnteriorFecha": "2026-01-31",
+        "ingresos": 2898860.00,
+        "egresos": 2831707.28,
+        "extras": [],
+        "saldoFinal": 239550.46
+      },
+      "prorrateo": {
+        "expensasA": 3313000,
+        "expensasB": 0,
+        "totalAPagar": 3313046.00
+      },
+      "egresos": {
+        "total": 2831707.28,
+        "secciones": {
+          "A_sueldos": 299212.00,
+          "B_cargas_sociales": 363366.68,
+          "C_servicios_publicos": 379306.08,
+          "D_abonos_servicios": 1155070.96,
+          "E_mantenimiento": 307700.00,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 107051.56,
+          "H_seguros_gastos": 0,
+          "I_administracion": 220000.00
+        }
+      },
+      "aviso": "De acuerdo a los gastos del edificio hubo que realizar el aumento de las expensas, es estrictamente para cubrir los gastos ordinarios de mantenimiento general, recarga de matafuegos, acondicionamiento de las luces de emergencia. Queda una tercera cuota por el trabajo sobre las luces del edificio y se termina con ese gasto. Debemos continuar con el acondicionamiento del edificio. Estamos en conocimiento de la falta del portero. Se están pidiendo presupuestos para continuar y por la pintura del palier interno del segundo cuerpo. También el acondicionamiento exterior."
+    },
+    {
+      "liquidacion": "2026-04",
+      "periodo": "Marzo 2026",
+      "vencimiento": "2026-04-10",
+      "cashFlow": {
+        "saldoAnterior": 239550.46,
+        "saldoAnteriorFecha": "2026-02-28",
+        "ingresos": 3513063.00,
+        "egresos": 3670464.62,
+        "extras": [],
+        "saldoFinal": 82148.84
+      },
+      "prorrateo": {
+        "expensasA": 3700000,
+        "expensasB": 0,
+        "totalAPagar": 3499983.00
+      },
+      "egresos": {
+        "total": 3670464.62,
+        "secciones": {
+          "A_sueldos": 288811.00,
+          "B_cargas_sociales": 536242.40,
+          "C_servicios_publicos": 76608.85,
+          "D_abonos_servicios": 1001500.86,
+          "E_mantenimiento": 716666.67,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 122867.43,
+          "H_seguros_gastos": 707767.41,
+          "I_administracion": 220000.00
+        }
+      },
+      "aviso": "De acuerdo a los gastos del edificio hubo que realizar el aumento de las expensas, es estrictamente para cubrir los gastos ordinarios de mantenimiento general, recarga de matafuegos, acondicionamiento de las luces de emergencia y otras luces. Queda una tercera cuota. Debemos continuar con el acondicionamiento del edificio. Estamos en conocimiento de la falta del portero. Se están pidiendo presupuestos también por ellos y por la pintura del palier interno del segundo cuerpo. Queda también el acondicionamiento exterior."
+    }
+  ],
+  "hallazgos_clave": {
+    "honorarios_duplicados": {
+      "descripcion": "Los honorarios de administración se duplicaron de $100.000 a $200.000 a partir de Agosto 2025 (liquidación 2025-09), sin aviso previo en la liquidación",
+      "antes": 100000,
+      "despues": 200000,
+      "aumento_porcentaje": 100,
+      "desde_liquidacion": "2025-09",
+      "luego_a": 220000,
+      "desde_liquidacion_2": "2026-02"
+    },
+    "prestamo_administracion": {
+      "descripcion": "La administración prestó $165.000 al consorcio en Junio 2025 para cubrir falta de fondos. Reintegrado en Julio 2025.",
+      "monto": 165000,
+      "prestamo_liquidacion": "2025-07",
+      "reintegro_liquidacion": "2025-08"
+    },
+    "saldo_minimo_historico": {
+      "descripcion": "El saldo en caja llegó a $2.128,08 en Junio 2025 — prácticamente cero",
+      "monto": 2128.08,
+      "liquidacion": "2025-07"
+    },
+    "aysa_excesiva": {
+      "descripcion": "AySA tuvo facturas anormalmente altas en varios meses. En Septiembre 2025 se pagaron $1.038.820 (dos facturas). La administración mencionó normalización de facturas y créditos.",
+      "pico_monto": 1038820.39,
+      "pico_liquidacion": "2025-10"
+    },
+    "sin_prevision": {
+      "descripcion": "Ninguna liquidación incluye sección de PREVISIÓN DE GASTOS. No hay forma de comparar estimados vs reales desde los PDFs."
+    }
+  }
+}
