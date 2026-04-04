@@ -25,14 +25,16 @@ interface MonthlyChartProps {
 export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
   const isMobile = useMobile();
 
-  // Últimos 6 meses — los más recientes siempre visibles
-  const recent = data.slice(-6);
-  const chartData = recent.map((m) => ({
-    name: m.label.split(" ")[0].slice(0, 3),
-    egresos: m.total,
-    expensasA: m.expensasA,
-    tuExpensa: Math.round(m.expensasA * (unitPercent / 100)),
-  }));
+  const chartData = data.map((m) => {
+    const [mes, anio] = m.label.split(" ");
+    const short = mes.slice(0, 3);
+    return {
+      name: `${short} ${anio.slice(2)}`,
+      egresos: m.total,
+      expensasA: m.expensasA,
+      tuExpensa: Math.round(m.expensasA * (unitPercent / 100)),
+    };
+  });
 
   return (
     <div className="space-y-6">
