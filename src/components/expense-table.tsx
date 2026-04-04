@@ -105,14 +105,14 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
                 </CollapsibleTrigger>
                 <CollapsibleContent>
                   <div className="border border-t-0 border-border rounded-b-lg overflow-hidden">
-                    <Table>
+                    <Table className="table-fixed w-full">
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Categoría</TableHead>
+                          <TableHead className="w-[130px]">Categoría</TableHead>
                           <TableHead>Descripción</TableHead>
-                          <TableHead className="text-right">Monto</TableHead>
+                          <TableHead className="text-right w-[100px]">Monto</TableHead>
                           {prevMonth && (
-                            <TableHead className="text-right">Var.</TableHead>
+                            <TableHead className="text-right w-[70px]">Var.</TableHead>
                           )}
                         </TableRow>
                       </TableHeader>
@@ -135,7 +135,7 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
                               <TableCell className="text-xs text-muted-foreground">
                                 {CATEGORY_LABELS[item.category]}
                               </TableCell>
-                              <TableCell className="text-sm">
+                              <TableCell className="text-sm break-words">
                                 {item.description}
                               </TableCell>
                               <TableCell className="text-right font-mono text-sm">
