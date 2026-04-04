@@ -425,7 +425,7 @@ export function BalanceTracker({ data }: BalanceTrackerProps) {
           {/* Desktop: table */}
           <div className="hidden sm:block rounded-lg border border-border overflow-x-auto">
             <div className="min-w-[600px]">
-              <div className="grid grid-cols-[1fr_85px_85px_85px_85px_85px] gap-1 p-3 bg-muted/50 text-xs font-medium text-muted-foreground">
+              <div className="grid grid-cols-[minmax(100px,1.2fr)_repeat(5,minmax(90px,1fr))] gap-3 p-3 bg-muted/50 text-xs font-medium text-muted-foreground">
                 <span>Mes</span>
                 <span className="text-right">Cobrado</span>
                 <span className="text-right">Gastado</span>
@@ -436,7 +436,7 @@ export function BalanceTracker({ data }: BalanceTrackerProps) {
               {balanceData.map((row) => (
                 <div
                   key={row.fullLabel}
-                  className={`grid grid-cols-[1fr_85px_85px_85px_85px_85px] gap-1 p-3 border-t border-border text-sm ${
+                  className={`grid grid-cols-[minmax(100px,1.2fr)_repeat(5,minmax(90px,1fr))] gap-3 p-3 border-t border-border text-sm ${
                     row.saldo < 0 ? "bg-destructive/5" : ""
                   }`}
                 >
@@ -480,7 +480,7 @@ export function BalanceTracker({ data }: BalanceTrackerProps) {
                 </div>
               ))}
               {/* Total row */}
-              <div className="grid grid-cols-[1fr_85px_85px_85px_85px_85px] gap-1 p-3 border-t border-border bg-muted/30 font-medium">
+              <div className="grid grid-cols-[minmax(100px,1.2fr)_repeat(5,minmax(90px,1fr))] gap-3 p-3 border-t border-border bg-muted/30 font-medium">
                 <span className="text-sm">Total</span>
                 <span className="text-right font-mono text-sm">
                   {formatCurrency(totalCobrado)}
