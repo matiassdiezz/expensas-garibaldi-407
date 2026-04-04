@@ -36,22 +36,23 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
           <CardTitle className="text-base">Egresos vs Expensas Cobradas</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[220px] sm:h-[300px]">
+          <div className="h-[220px] sm:h-[300px] overflow-hidden">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData}>
+              <BarChart data={chartData} margin={{ left: -10, right: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 10%)" />
                 <XAxis
                   dataKey="name"
                   stroke="oklch(0.7 0 0)"
-                  fontSize={12}
+                  fontSize={11}
                   tickLine={false}
                   axisLine={false}
                 />
                 <YAxis
                   stroke="oklch(0.7 0 0)"
-                  fontSize={11}
+                  fontSize={10}
                   tickLine={false}
                   axisLine={false}
+                  width={45}
                   tickFormatter={(value) => `${(value / 1000000).toFixed(1)}M`}
                 />
                 <Tooltip
@@ -65,17 +66,17 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
                   labelStyle={{ color: "oklch(0.7 0 0)" }}
                 />
                 <Legend
-                  wrapperStyle={{ fontSize: "12px" }}
+                  wrapperStyle={{ fontSize: "11px" }}
                 />
                 <Bar
                   dataKey="egresos"
-                  name="Egresos reales"
+                  name="Egresos"
                   fill="oklch(0.6 0.2 15)"
                   radius={[4, 4, 0, 0]}
                 />
                 <Bar
                   dataKey="expensasA"
-                  name="Expensas A cobradas"
+                  name="Exp. A cobradas"
                   fill="oklch(0.65 0.15 250)"
                   radius={[4, 4, 0, 0]}
                 />
@@ -90,9 +91,9 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
           <CardTitle className="text-base">Tu Expensa ({unitPercent}%)</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[160px] sm:h-[200px]">
+          <div className="h-[160px] sm:h-[200px] overflow-hidden">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData}>
+              <LineChart data={chartData} margin={{ left: -10, right: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 10%)" />
                 <XAxis
                   dataKey="name"

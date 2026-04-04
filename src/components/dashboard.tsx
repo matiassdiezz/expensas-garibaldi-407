@@ -22,7 +22,7 @@ export function Dashboard() {
   const lastMonth = data[data.length - 1]?.label ?? "";
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 overflow-x-hidden">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-xl font-bold tracking-tight sm:text-2xl md:text-3xl">
