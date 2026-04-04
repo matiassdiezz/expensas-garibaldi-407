@@ -13,6 +13,7 @@ import { Forecast } from "@/components/forecast";
 import { AdminNotices } from "@/components/admin-notices";
 import { Benchmark } from "@/components/benchmark";
 import { Separator } from "@/components/ui/separator";
+import { MobileSectionNav } from "@/components/mobile-section-nav";
 
 export function Dashboard() {
   const data = expensasData;
@@ -26,24 +27,31 @@ export function Dashboard() {
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 overflow-x-hidden">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-xl font-bold tracking-tight sm:text-2xl md:text-3xl">
-          Expensas Garibaldi 407/411
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Consorcio de Propietarios · San Isidro · Administración Andrade
-        </p>
-        <p className="text-sm text-muted-foreground">
-          {firstMonth} – {lastMonth} · {data.length} liquidaciones
-        </p>
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h1 className="text-xl font-bold tracking-tight sm:text-2xl md:text-3xl">
+              Expensas Garibaldi 407/411
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Consorcio de Propietarios · San Isidro · Administración Andrade
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {firstMonth} – {lastMonth} · {data.length} liquidaciones
+            </p>
+          </div>
+          <MobileSectionNav className="md:hidden" />
+        </div>
       </div>
 
       {/* Unit selector */}
-      <div className="mb-6">
+      <div id="section-unidad" className="mb-6 scroll-mt-6">
         <UnitSelector selectedUf={selectedUf} onSelect={setSelectedUf} />
       </div>
 
       {/* Summary */}
-      <SummaryCards data={data} unitPercent={selectedUnit.percent} />
+      <section id="section-resumen" className="scroll-mt-6">
+        <SummaryCards data={data} unitPercent={selectedUnit.percent} />
+      </section>
 
       <Separator className="my-8" />
 
@@ -51,30 +59,42 @@ export function Dashboard() {
       <div className="grid gap-6 lg:grid-cols-2">
         <MonthlyChart data={data} unitPercent={selectedUnit.percent} />
         <div className="space-y-6">
-          <CategoryChart data={data} />
-          <MonthComparison data={data} />
+          <section id="section-categorias" className="scroll-mt-6">
+            <CategoryChart data={data} />
+          </section>
+          <section id="section-comparador" className="scroll-mt-6">
+            <MonthComparison data={data} />
+          </section>
         </div>
       </div>
 
       <Separator className="my-8" />
 
       {/* Detail table */}
-      <ExpenseTable data={data} />
+      <section id="section-detalle" className="scroll-mt-6">
+        <ExpenseTable data={data} />
+      </section>
 
       <Separator className="my-8" />
 
       {/* Forecast */}
-      <Forecast data={data} unitPercent={selectedUnit.percent} />
+      <section id="section-proyeccion" className="scroll-mt-6">
+        <Forecast data={data} unitPercent={selectedUnit.percent} />
+      </section>
 
       <Separator className="my-8" />
 
       {/* Benchmark comparison */}
-      <Benchmark />
+      <section id="section-benchmark" className="scroll-mt-6">
+        <Benchmark />
+      </section>
 
       <Separator className="my-8" />
 
       {/* Admin notices */}
-      <AdminNotices />
+      <section id="section-comunicados" className="scroll-mt-6">
+        <AdminNotices />
+      </section>
 
       {/* Footer */}
       <div className="mt-12 pb-8 text-center text-xs text-muted-foreground">

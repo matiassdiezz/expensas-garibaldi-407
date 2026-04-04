@@ -36,10 +36,11 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Egresos vs Expensas Cobradas</CardTitle>
-        </CardHeader>
+      <section id="section-egresos-expensas" className="scroll-mt-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Egresos vs Expensas Cobradas</CardTitle>
+          </CardHeader>
         <CardContent className="min-w-0">
           <div className="h-[220px] min-w-0 sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -105,12 +106,14 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
             </ResponsiveContainer>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Tu Expensa ({unitPercent}%)</CardTitle>
-        </CardHeader>
+      <section id="section-tu-expensa" className="scroll-mt-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Tu Expensa ({unitPercent}%)</CardTitle>
+          </CardHeader>
         <CardContent className="min-w-0">
           <div className="h-[160px] min-w-0 sm:h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -165,7 +168,8 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
             </ResponsiveContainer>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </section>
     </div>
   );
 }
