@@ -165,7 +165,7 @@ export function ExpenseTable({ data, categoryFilter }: ExpenseTableProps) {
                                 <TableCell className="text-xs text-muted-foreground">
                                   {CATEGORY_LABELS[item.category]}
                                 </TableCell>
-                                <TableCell className="text-sm break-words">
+                                <TableCell className="text-sm break-words whitespace-normal">
                                   {item.description}
                                 </TableCell>
                                 <TableCell className="text-right font-mono text-sm">
