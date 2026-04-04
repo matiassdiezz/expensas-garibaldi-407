@@ -59,9 +59,9 @@ export function CategoryChart({ data }: CategoryChartProps) {
               layout="vertical"
               margin={{
                 top: 8,
-                right: isMobile ? 6 : 20,
-                bottom: 0,
-                left: isMobile ? 0 : 4,
+                right: isMobile ? 24 : 20,
+                bottom: isMobile ? 12 : 8,
+                left: isMobile ? 4 : 4,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 10%)" horizontal={false} />
@@ -73,7 +73,7 @@ export function CategoryChart({ data }: CategoryChartProps) {
                 axisLine={false}
                 tickMargin={6}
                 tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
-                padding={{ right: isMobile ? 8 : 20 }}
+                padding={{ left: isMobile ? 4 : 0, right: isMobile ? 12 : 20 }}
               />
               <YAxis
                 type="category"

@@ -48,9 +48,9 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
                 barCategoryGap={isMobile ? "18%" : "24%"}
                 margin={{
                   top: 8,
-                  right: isMobile ? 6 : 12,
-                  bottom: 0,
-                  left: isMobile ? 0 : 4,
+                  right: isMobile ? 16 : 12,
+                  bottom: isMobile ? 32 : 8,
+                  left: isMobile ? 4 : 4,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 10%)" />
@@ -118,9 +118,9 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
                 data={chartData}
                 margin={{
                   top: 8,
-                  right: isMobile ? 6 : 12,
-                  bottom: 0,
-                  left: isMobile ? 0 : 4,
+                  right: isMobile ? 16 : 12,
+                  bottom: isMobile ? 8 : 4,
+                  left: isMobile ? 4 : 4,
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 10%)" />
