@@ -47,7 +47,8 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          {data.map((month, i) => {
+          {[...data].reverse().map((month) => {
+            const i = data.indexOf(month);
             const prevMonth = i > 0 ? data[i - 1] : null;
             const change = prevMonth
               ? getMonthOverMonthChange(month.total, prevMonth.total)
