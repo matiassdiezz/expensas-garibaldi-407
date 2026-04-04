@@ -63,8 +63,10 @@ export function CategoryChart({ data }: CategoryChartProps) {
                   border: "1px solid oklch(1 0 0 / 10%)",
                   borderRadius: "8px",
                   fontSize: "13px",
+                  color: "oklch(0.9 0 0)",
                 }}
                 labelStyle={{ color: "oklch(0.7 0 0)" }}
+                itemStyle={{ color: "oklch(0.9 0 0)" }}
               />
               <Bar dataKey="total" radius={[0, 4, 4, 0]}>
                 {chartData.map((entry, index) => (
