@@ -26,9 +26,10 @@ import {
 
 interface ExpenseTableProps {
   data: MonthData[];
+  categoryFilter: ExpenseCategory | null;
 }
 
-export function ExpenseTable({ data }: ExpenseTableProps) {
+export function ExpenseTable({ data, categoryFilter }: ExpenseTableProps) {
   const [openMonths, setOpenMonths] = useState<Set<string>>(new Set());
 
   const toggle = (month: string) => {
@@ -43,23 +44,42 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Detalle por Mes</CardTitle>
+        <CardTitle className="text-base">
+          Detalle por Mes
+          {categoryFilter && (
+            <span className="text-sm font-normal text-muted-foreground ml-2">
+              · {CATEGORY_LABELS[categoryFilter]}
+            </span>
+          )}
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
           {[...data].reverse().map((month) => {
             const i = data.indexOf(month);
             const prevMonth = i > 0 ? data[i - 1] : null;
-            const change = prevMonth
-              ? getMonthOverMonthChange(month.total, prevMonth.total)
+
+            // Totales según filtro
+            const displayTotal = categoryFilter
+              ? getMonthCategoryTotal(month, categoryFilter)
+              : month.total;
+            const prevDisplayTotal = prevMonth
+              ? categoryFilter
+                ? getMonthCategoryTotal(prevMonth, categoryFilter)
+                : prevMonth.total
+              : 0;
+            const change = prevMonth && prevDisplayTotal > 0
+              ? getMonthOverMonthChange(displayTotal, prevDisplayTotal)
               : 0;
             const isOpen = openMonths.has(month.month);
 
             // Detectar anomalías por categoría
             const anomalies: { category: ExpenseCategory; change: number }[] = [];
             if (prevMonth) {
-              const categories = new Set(month.items.map((item) => item.category));
-              for (const cat of categories) {
+              const cats = categoryFilter
+                ? [categoryFilter]
+                : Array.from(new Set(month.items.map((item) => item.category)));
+              for (const cat of cats) {
                 const current = getMonthCategoryTotal(month, cat);
                 const previous = getMonthCategoryTotal(prevMonth, cat);
                 const catChange = getMonthOverMonthChange(current, previous);
@@ -68,6 +88,9 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
                 }
               }
             }
+
+            // Skip months with no items for this category
+            if (categoryFilter && displayTotal === 0) return null;
 
             return (
               <Collapsible
@@ -86,7 +109,7 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
                       )}
                     </div>
                     <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-                      {prevMonth && (
+                      {prevMonth && prevDisplayTotal > 0 && (
                         <Badge
                           variant={change > 10 ? "destructive" : "secondary"}
                           className="text-xs font-mono"
@@ -95,7 +118,7 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
                         </Badge>
                       )}
                       <span className="text-xs sm:text-sm font-bold font-mono">
-                        {formatCurrency(month.total)}
+                        {formatCurrency(displayTotal)}
                       </span>
                       <span className="text-muted-foreground text-xs">
                         {isOpen ? "▲" : "▼"}
@@ -117,64 +140,70 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {month.items.map((item, j) => {
-                          const prevCatTotal = prevMonth
-                            ? getMonthCategoryTotal(prevMonth, item.category)
-                            : 0;
-                          const currentCatTotal = getMonthCategoryTotal(month, item.category);
-                          const itemIsAnomaly =
-                            prevMonth &&
-                            prevCatTotal > 0 &&
-                            getMonthOverMonthChange(currentCatTotal, prevCatTotal) > 30;
-
-                          return (
-                            <TableRow
-                              key={j}
-                              className={itemIsAnomaly ? "bg-destructive/10" : ""}
-                            >
-                              <TableCell className="text-xs text-muted-foreground">
-                                {CATEGORY_LABELS[item.category]}
-                              </TableCell>
-                              <TableCell className="text-sm break-words">
-                                {item.description}
-                              </TableCell>
-                              <TableCell className="text-right font-mono text-sm">
-                                {formatCurrency(item.amount)}
-                              </TableCell>
-                              {prevMonth && (
-                                <TableCell className="text-right">
-                                  {/* Show category-level var for first item in category */}
-                                  {j === 0 ||
-                                  month.items[j - 1]?.category !== item.category ? (
-                                    prevCatTotal > 0 ? (
-                                      <span
-                                        className={`text-xs font-mono ${
-                                          getMonthOverMonthChange(
-                                            currentCatTotal,
-                                            prevCatTotal
-                                          ) > 30
-                                            ? "text-destructive"
-                                            : "text-muted-foreground"
-                                        }`}
-                                      >
-                                        {formatPercent(
-                                          getMonthOverMonthChange(
-                                            currentCatTotal,
-                                            prevCatTotal
-                                          )
-                                        )}
-                                      </span>
-                                    ) : (
-                                      <span className="text-xs text-muted-foreground">
-                                        nuevo
-                                      </span>
-                                    )
-                                  ) : null}
-                                </TableCell>
-                              )}
-                            </TableRow>
+                        {(() => {
+                          const filteredItems = month.items.filter(
+                            (item) => !categoryFilter || item.category === categoryFilter
                           );
-                        })}
+                          return filteredItems.map((item, j) => {
+                            const prevCatTotal = prevMonth
+                              ? getMonthCategoryTotal(prevMonth, item.category)
+                              : 0;
+                            const currentCatTotal = getMonthCategoryTotal(month, item.category);
+                            const itemIsAnomaly =
+                              prevMonth &&
+                              prevCatTotal > 0 &&
+                              getMonthOverMonthChange(currentCatTotal, prevCatTotal) > 30;
+
+                            const isFirstInCategory =
+                              j === 0 || filteredItems[j - 1]?.category !== item.category;
+
+                            return (
+                              <TableRow
+                                key={j}
+                                className={itemIsAnomaly ? "bg-destructive/10" : ""}
+                              >
+                                <TableCell className="text-xs text-muted-foreground">
+                                  {CATEGORY_LABELS[item.category]}
+                                </TableCell>
+                                <TableCell className="text-sm break-words">
+                                  {item.description}
+                                </TableCell>
+                                <TableCell className="text-right font-mono text-sm">
+                                  {formatCurrency(item.amount)}
+                                </TableCell>
+                                {prevMonth && (
+                                  <TableCell className="text-right">
+                                    {isFirstInCategory ? (
+                                      prevCatTotal > 0 ? (
+                                        <span
+                                          className={`text-xs font-mono ${
+                                            getMonthOverMonthChange(
+                                              currentCatTotal,
+                                              prevCatTotal
+                                            ) > 30
+                                              ? "text-destructive"
+                                              : "text-muted-foreground"
+                                          }`}
+                                        >
+                                          {formatPercent(
+                                            getMonthOverMonthChange(
+                                              currentCatTotal,
+                                              prevCatTotal
+                                            )
+                                          )}
+                                        </span>
+                                      ) : (
+                                        <span className="text-xs text-muted-foreground">
+                                          nuevo
+                                        </span>
+                                      )
+                                    ) : null}
+                                  </TableCell>
+                                )}
+                              </TableRow>
+                            );
+                          });
+                        })()}
                       </TableBody>
                     </Table>
                   </div>
