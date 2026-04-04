@@ -3,11 +3,9 @@
 import { useState } from "react";
 import { expensasData } from "@/lib/data";
 import { units } from "@/lib/units";
-import { ExpenseCategory } from "@/types/expense";
 import { SummaryCards } from "@/components/summary-cards";
 import { MonthlyChart } from "@/components/monthly-chart";
 import { CategoryChart } from "@/components/category-chart";
-import { CategorySummary } from "@/components/category-summary";
 import { ExpenseTable } from "@/components/expense-table";
 import { MonthComparison } from "@/components/month-comparison";
 import { UnitSelector } from "@/components/unit-selector";
@@ -19,7 +17,6 @@ import { Separator } from "@/components/ui/separator";
 export function Dashboard() {
   const data = expensasData;
   const [selectedUf, setSelectedUf] = useState(26); // Default: DIEZ
-  const [categoryFilter, setCategoryFilter] = useState<ExpenseCategory | null>(null);
 
   const selectedUnit = units.find((u) => u.uf === selectedUf)!;
   const firstMonth = data[0]?.label ?? "";
@@ -61,15 +58,8 @@ export function Dashboard() {
 
       <Separator className="my-8" />
 
-      {/* Category summary + Detail table */}
-      <div className="space-y-6">
-        <CategorySummary
-          data={data}
-          selectedCategory={categoryFilter}
-          onSelectCategory={setCategoryFilter}
-        />
-        <ExpenseTable data={data} categoryFilter={categoryFilter} />
-      </div>
+      {/* Detail table */}
+      <ExpenseTable data={data} />
 
       <Separator className="my-8" />
 

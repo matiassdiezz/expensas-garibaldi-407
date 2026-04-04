@@ -116,17 +116,17 @@ export function MonthComparison({ data }: MonthComparisonProps) {
               </div>
             ))}
             <div className="grid grid-cols-[1fr_80px_80px_70px] gap-1 p-3 border-t border-border bg-muted/30 font-medium">
-              <span className="text-sm">Total</span>
-              <span className="text-right font-mono text-sm">
+              <span className="text-xs sm:text-sm">Total</span>
+              <span className="text-right font-mono text-[11px] sm:text-sm">
                 {formatCurrency(dataA.total)}
               </span>
-              <span className="text-right font-mono text-sm">
+              <span className="text-right font-mono text-[11px] sm:text-sm">
                 {formatCurrency(dataB.total)}
               </span>
               <span className="text-right">
                 <Badge
                   variant={totalChange > 10 ? "destructive" : "secondary"}
-                  className="text-xs font-mono"
+                  className="text-[10px] sm:text-xs font-mono"
                 >
                   {formatPercent(totalChange)}
                 </Badge>

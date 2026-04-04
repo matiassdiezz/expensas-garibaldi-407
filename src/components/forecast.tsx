@@ -131,7 +131,7 @@ export function Forecast({ data, unitPercent }: ForecastProps) {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className="rounded-lg border border-primary/30 bg-primary/5 p-3">
             <p className="text-xs text-muted-foreground">Egresos estimados</p>
-            <p className="text-lg font-bold font-mono mt-0.5">
+            <p className="text-base sm:text-lg font-bold font-mono mt-0.5">
               {formatCurrency(totalForecast)}
             </p>
             {prevMonth && (
@@ -147,13 +147,13 @@ export function Forecast({ data, unitPercent }: ForecastProps) {
             <p className="text-xs text-muted-foreground">
               Tu expensa estimada ({unitPercent}%)
             </p>
-            <p className="text-lg font-bold font-mono mt-0.5">
+            <p className="text-base sm:text-lg font-bold font-mono mt-0.5">
               {formatCurrency(forecastUnit)}
             </p>
           </div>
           <div className="rounded-lg border border-border p-3">
             <p className="text-xs text-muted-foreground">Cuotas pendientes</p>
-            <p className="text-lg font-bold font-mono mt-0.5">
+            <p className="text-base sm:text-lg font-bold font-mono mt-0.5">
               {formatCurrency(totalPendingInstallments)}
             </p>
             <p className="text-xs text-muted-foreground mt-0.5">
@@ -177,7 +177,7 @@ export function Forecast({ data, unitPercent }: ForecastProps) {
                   <div className="min-w-0">
                     <p className="text-sm break-words">{p.description}</p>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {CATEGORY_LABELS[p.category]} · Cuota {p.current}/{p.total}
+                      {CATEGORY_LABELS[p.category].split(" · ")[1]} · Cuota {p.current}/{p.total}
                     </p>
                   </div>
                   <div className="text-right shrink-0">
@@ -223,7 +223,7 @@ export function Forecast({ data, unitPercent }: ForecastProps) {
                       className="grid grid-cols-[1fr_90px_90px_65px] gap-1 items-center rounded px-2 py-1.5 text-sm"
                     >
                       <span className="text-xs sm:text-sm">
-                        {CATEGORY_LABELS[r.category]}
+                        {CATEGORY_LABELS[r.category].split(" · ")[1]}
                       </span>
                       <span className="text-right font-mono text-xs">
                         {formatCurrency(r.estimate)}
@@ -251,11 +251,11 @@ export function Forecast({ data, unitPercent }: ForecastProps) {
                   );
                 })}
               <div className="grid grid-cols-[1fr_90px_90px_65px] gap-1 px-2 py-2 border-t border-border mt-1 font-medium">
-                <span className="text-sm">Total</span>
-                <span className="text-right font-mono text-sm">
+                <span className="text-xs sm:text-sm">Total</span>
+                <span className="text-right font-mono text-xs sm:text-sm">
                   {formatCurrency(totalRecurringEstimate)}
                 </span>
-                <span className="text-right font-mono text-sm text-muted-foreground">
+                <span className="text-right font-mono text-xs sm:text-sm text-muted-foreground">
                   {formatCurrency(lastMonth.total)}
                 </span>
                 <span />
