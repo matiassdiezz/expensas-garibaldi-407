@@ -10,6 +10,7 @@ import { ExpenseTable } from "@/components/expense-table";
 import { MonthComparison } from "@/components/month-comparison";
 import { UnitSelector } from "@/components/unit-selector";
 import { AdminNotices } from "@/components/admin-notices";
+import { Benchmark } from "@/components/benchmark";
 import { Separator } from "@/components/ui/separator";
 
 export function Dashboard() {
@@ -58,6 +59,11 @@ export function Dashboard() {
 
       {/* Detail table */}
       <ExpenseTable data={data} />
+
+      <Separator className="my-8" />
+
+      {/* Benchmark comparison */}
+      <Benchmark />
 
       <Separator className="my-8" />
 
