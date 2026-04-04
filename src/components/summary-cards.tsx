@@ -7,9 +7,10 @@ import { formatCurrency, formatPercent, getMonthOverMonthChange } from "@/lib/ut
 
 interface SummaryCardsProps {
   data: MonthData[];
+  unitPercent: number;
 }
 
-export function SummaryCards({ data }: SummaryCardsProps) {
+export function SummaryCards({ data, unitPercent }: SummaryCardsProps) {
   const totalEgresos = data.reduce((sum, m) => sum + m.total, 0);
   const promedioEgresos = totalEgresos / data.length;
 
@@ -18,10 +19,10 @@ export function SummaryCards({ data }: SummaryCardsProps) {
   const expensasALast = data[data.length - 1].expensasA;
   const variacionExpensasA = getMonthOverMonthChange(expensasALast, expensasAFirst);
 
-  // Variación UF Diez
-  const ufDiezFirst = data[0].ufDiez;
-  const ufDiezLast = data[data.length - 1].ufDiez;
-  const variacionUfDiez = getMonthOverMonthChange(ufDiezLast, ufDiezFirst);
+  // Variación unidad seleccionada
+  const unitFirst = Math.round(expensasAFirst * (unitPercent / 100));
+  const unitLast = Math.round(expensasALast * (unitPercent / 100));
+  const variacionUnit = getMonthOverMonthChange(unitLast, unitFirst);
 
   // Mes con mayor gasto
   const mesMasCaro = data.reduce((max, m) => (m.total > max.total ? m : max), data[0]);
@@ -75,17 +76,17 @@ export function SummaryCards({ data }: SummaryCardsProps) {
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium text-muted-foreground">
-            Tu Expensa (UF 26 · 6.4%)
+            Tu Expensa ({unitPercent}%)
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold font-mono">{formatCurrency(ufDiezLast)}</div>
+          <div className="text-2xl font-bold font-mono">{formatCurrency(unitLast)}</div>
           <div className="flex items-center gap-1 mt-1">
-            <Badge variant={variacionUfDiez > 0 ? "destructive" : "secondary"} className="text-xs">
-              {formatPercent(variacionUfDiez)}
+            <Badge variant={variacionUnit > 0 ? "destructive" : "secondary"} className="text-xs">
+              {formatPercent(variacionUnit)}
             </Badge>
             <span className="text-xs text-muted-foreground">
-              desde {formatCurrency(ufDiezFirst)}
+              desde {formatCurrency(unitFirst)}
             </span>
           </div>
         </CardContent>

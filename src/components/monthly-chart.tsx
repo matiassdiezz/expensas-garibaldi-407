@@ -18,14 +18,15 @@ import {
 
 interface MonthlyChartProps {
   data: MonthData[];
+  unitPercent: number;
 }
 
-export function MonthlyChart({ data }: MonthlyChartProps) {
+export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
   const chartData = data.map((m) => ({
     name: m.label.split(" ")[0].slice(0, 3),
     egresos: m.total,
     expensasA: m.expensasA,
-    ufDiez: m.ufDiez,
+    tuExpensa: Math.round(m.expensasA * (unitPercent / 100)),
   }));
 
   return (
@@ -86,7 +87,7 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Tu Expensa (UF 26 – DIEZ)</CardTitle>
+          <CardTitle className="text-base">Tu Expensa ({unitPercent}%)</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-[200px]">
@@ -119,8 +120,8 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
                 />
                 <Line
                   type="monotone"
-                  dataKey="ufDiez"
-                  name="Expensa UF 26"
+                  dataKey="tuExpensa"
+                  name="Tu expensa"
                   stroke="oklch(0.7 0.2 160)"
                   strokeWidth={2.5}
                   dot={{ fill: "oklch(0.7 0.2 160)", r: 4 }}
