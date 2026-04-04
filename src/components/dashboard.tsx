@@ -9,6 +9,7 @@ import { CategoryChart } from "@/components/category-chart";
 import { ExpenseTable } from "@/components/expense-table";
 import { MonthComparison } from "@/components/month-comparison";
 import { UnitSelector } from "@/components/unit-selector";
+import { AdminNotices } from "@/components/admin-notices";
 import { Separator } from "@/components/ui/separator";
 
 export function Dashboard() {
@@ -57,6 +58,11 @@ export function Dashboard() {
 
       {/* Detail table */}
       <ExpenseTable data={data} />
+
+      <Separator className="my-8" />
+
+      {/* Admin notices */}
+      <AdminNotices />
 
       {/* Footer */}
       <div className="mt-12 pb-8 text-center text-xs text-muted-foreground">
