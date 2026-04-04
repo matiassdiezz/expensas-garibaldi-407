@@ -1,14 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { expensasData } from "@/lib/data";
-import { units } from "@/lib/units";
 import { SummaryCards } from "@/components/summary-cards";
 import { MonthlyChart } from "@/components/monthly-chart";
 import { CategoryChart } from "@/components/category-chart";
 import { ExpenseTable } from "@/components/expense-table";
-import { MonthComparison } from "@/components/month-comparison";
-import { UnitSelector } from "@/components/unit-selector";
 import { Forecast } from "@/components/forecast";
 import { BalanceTracker } from "@/components/balance-tracker";
 import { AdminNotices } from "@/components/admin-notices";
@@ -18,9 +14,6 @@ import { MobileSectionNav } from "@/components/mobile-section-nav";
 
 export function Dashboard() {
   const data = expensasData;
-  const [selectedUf, setSelectedUf] = useState(26); // Default: DIEZ
-
-  const selectedUnit = units.find((u) => u.uf === selectedUf)!;
   const firstMonth = data[0]?.label ?? "";
   const lastMonth = data[data.length - 1]?.label ?? "";
 
@@ -44,30 +37,15 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* Unit selector */}
-      <div id="section-unidad" className="mb-6 scroll-mt-6">
-        <UnitSelector selectedUf={selectedUf} onSelect={setSelectedUf} />
-      </div>
-
       {/* Summary */}
       <section id="section-resumen" className="scroll-mt-6">
-        <SummaryCards data={data} unitPercent={selectedUnit.percent} />
+        <SummaryCards data={data} />
       </section>
 
       <Separator className="my-8" />
 
-      {/* Charts row */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <MonthlyChart data={data} unitPercent={selectedUnit.percent} />
-        <div className="space-y-6">
-          <section id="section-categorias" className="scroll-mt-6">
-            <CategoryChart data={data} />
-          </section>
-          <section id="section-comparador" className="scroll-mt-6">
-            <MonthComparison data={data} />
-          </section>
-        </div>
-      </div>
+      {/* Evolution chart: egresos vs expensas vs caja */}
+      <MonthlyChart data={data} />
 
       <Separator className="my-8" />
 
@@ -85,9 +63,14 @@ export function Dashboard() {
 
       <Separator className="my-8" />
 
+      {/* Category pie chart */}
+      <CategoryChart data={data} />
+
+      <Separator className="my-8" />
+
       {/* Forecast */}
       <section id="section-proyeccion" className="scroll-mt-6">
-        <Forecast data={data} unitPercent={selectedUnit.percent} />
+        <Forecast data={data} unitPercent={6.4} />
       </section>
 
       <Separator className="my-8" />

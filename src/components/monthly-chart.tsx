@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MonthData } from "@/types/expense";
 import { formatCurrency } from "@/lib/utils";
 import { useMobile } from "@/lib/use-mobile";
+import liquidacionesRaw from "@/lib/liquidaciones.json";
 import {
   LineChart,
   Line,
@@ -13,46 +14,47 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-  BarChart,
-  Bar,
 } from "recharts";
+
+const liquidaciones = liquidacionesRaw.liquidaciones;
 
 interface MonthlyChartProps {
   data: MonthData[];
-  unitPercent: number;
 }
 
-export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
+export function MonthlyChart({ data }: MonthlyChartProps) {
   const isMobile = useMobile();
 
   const chartData = data.map((m) => {
     const [mes, anio] = m.label.split(" ");
     const short = mes.slice(0, 3);
+    const liq = liquidaciones.find((l) => l.liquidacion === m.month);
     return {
       name: `${short} ${anio.slice(2)}`,
       egresos: m.total,
-      expensasA: m.expensasA,
-      tuExpensa: Math.round(m.expensasA * (unitPercent / 100)),
+      expensas: m.expensasA,
+      caja: liq?.cashFlow.saldoFinal ?? null,
     };
   });
 
   return (
-    <div className="space-y-6">
-      <section id="section-egresos-expensas" className="scroll-mt-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Egresos vs Expensas Cobradas</CardTitle>
-          </CardHeader>
+    <section id="section-evolucion" className="scroll-mt-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Egresos vs Expensas vs Caja</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            Evolución mensual — lo que se gasta, lo que se cobra, y lo que queda en el banco
+          </p>
+        </CardHeader>
         <CardContent className="min-w-0">
-          <div className="h-[220px] min-w-0 sm:h-[300px]">
+          <div className="h-[260px] min-w-0 sm:h-[340px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart
+              <LineChart
                 data={chartData}
-                barCategoryGap={isMobile ? "18%" : "24%"}
                 margin={{
                   top: 8,
-                  right: isMobile ? 16 : 12,
-                  bottom: isMobile ? 32 : 8,
+                  right: isMobile ? 16 : 20,
+                  bottom: isMobile ? 8 : 4,
                   left: isMobile ? 4 : 4,
                 }}
               >
@@ -60,11 +62,11 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
                 <XAxis
                   dataKey="name"
                   stroke="oklch(0.7 0 0)"
-                  fontSize={isMobile ? 10 : 11}
+                  fontSize={isMobile ? 9 : 11}
                   tickLine={false}
                   axisLine={false}
                   tickMargin={6}
-                  padding={{ left: isMobile ? 8 : 15, right: isMobile ? 8 : 15 }}
+                  interval={isMobile ? 1 : 0}
                 />
                 <YAxis
                   stroke="oklch(0.7 0 0)"
@@ -92,86 +94,40 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
                     paddingTop: isMobile ? "8px" : "12px",
                   }}
                 />
-                <Bar
+                <Line
+                  type="monotone"
                   dataKey="egresos"
                   name="Egresos"
-                  fill="oklch(0.6 0.2 15)"
-                  radius={[4, 4, 0, 0]}
-                />
-                <Bar
-                  dataKey="expensasA"
-                  name={isMobile ? "Exp. A" : "Exp. A cobradas"}
-                  fill="oklch(0.65 0.15 250)"
-                  radius={[4, 4, 0, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-        </Card>
-      </section>
-
-      <section id="section-tu-expensa" className="scroll-mt-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Tu Expensa ({unitPercent}%)</CardTitle>
-          </CardHeader>
-        <CardContent className="min-w-0">
-          <div className="h-[160px] min-w-0 sm:h-[200px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                data={chartData}
-                margin={{
-                  top: 8,
-                  right: isMobile ? 16 : 12,
-                  bottom: isMobile ? 8 : 4,
-                  left: isMobile ? 4 : 4,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 10%)" />
-                <XAxis
-                  dataKey="name"
-                  stroke="oklch(0.7 0 0)"
-                  fontSize={isMobile ? 10 : 12}
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={6}
-                  padding={{ left: isMobile ? 8 : 15, right: isMobile ? 8 : 15 }}
-                />
-                <YAxis
-                  stroke="oklch(0.7 0 0)"
-                  fontSize={isMobile ? 9 : 11}
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={6}
-                  width={isMobile ? 34 : 44}
-                  tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`}
-                />
-                <Tooltip
-                  formatter={(value) => [formatCurrency(Number(value)), "Tu expensa"]}
-                  contentStyle={{
-                    backgroundColor: "oklch(0.205 0 0)",
-                    border: "1px solid oklch(1 0 0 / 10%)",
-                    borderRadius: "8px",
-                    fontSize: "13px",
-                  }}
-                  labelStyle={{ color: "oklch(0.7 0 0)" }}
+                  stroke="oklch(0.6 0.2 15)"
+                  strokeWidth={2}
+                  dot={{ fill: "oklch(0.6 0.2 15)", r: isMobile ? 2.5 : 3.5 }}
+                  activeDot={{ r: isMobile ? 4 : 6 }}
                 />
                 <Line
                   type="monotone"
-                  dataKey="tuExpensa"
-                  name="Tu expensa"
+                  dataKey="expensas"
+                  name="Expensas cobradas"
+                  stroke="oklch(0.65 0.15 250)"
+                  strokeWidth={2}
+                  dot={{ fill: "oklch(0.65 0.15 250)", r: isMobile ? 2.5 : 3.5 }}
+                  activeDot={{ r: isMobile ? 4 : 6 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="caja"
+                  name="Saldo en caja"
                   stroke="oklch(0.7 0.2 160)"
-                  strokeWidth={isMobile ? 2.25 : 2.5}
-                  dot={{ fill: "oklch(0.7 0.2 160)", r: isMobile ? 3 : 4 }}
-                  activeDot={{ r: isMobile ? 5 : 6 }}
+                  strokeWidth={2}
+                  strokeDasharray="6 3"
+                  dot={{ fill: "oklch(0.7 0.2 160)", r: isMobile ? 2.5 : 3.5 }}
+                  activeDot={{ r: isMobile ? 4 : 6 }}
+                  connectNulls
                 />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </CardContent>
-        </Card>
-      </section>
-    </div>
+      </Card>
+    </section>
   );
 }

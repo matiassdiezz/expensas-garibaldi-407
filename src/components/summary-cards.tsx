@@ -8,7 +8,6 @@ import { cn, formatCurrency, formatPercent, getMonthOverMonthChange } from "@/li
 
 interface SummaryCardsProps {
   data: MonthData[];
-  unitPercent: number;
 }
 
 function SummaryCardLink({
@@ -34,7 +33,7 @@ function SummaryCardLink({
   );
 }
 
-export function SummaryCards({ data, unitPercent }: SummaryCardsProps) {
+export function SummaryCards({ data }: SummaryCardsProps) {
   const totalEgresos = data.reduce((sum, m) => sum + m.total, 0);
   const promedioEgresos = totalEgresos / data.length;
 
@@ -43,13 +42,12 @@ export function SummaryCards({ data, unitPercent }: SummaryCardsProps) {
   const expensasALast = data[data.length - 1].expensasA;
   const variacionExpensasA = getMonthOverMonthChange(expensasALast, expensasAFirst);
 
-  // Variación unidad seleccionada
-  const unitFirst = Math.round(expensasAFirst * (unitPercent / 100));
-  const unitLast = Math.round(expensasALast * (unitPercent / 100));
-  const variacionUnit = getMonthOverMonthChange(unitLast, unitFirst);
-
   // Mes con mayor gasto
   const mesMasCaro = data.reduce((max, m) => (m.total > max.total ? m : max), data[0]);
+
+  // Total cobrado vs gastado
+  const totalCobrado = data.reduce((sum, m) => sum + m.expensasA, 0);
+  const balance = totalCobrado - totalEgresos;
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -73,8 +71,8 @@ export function SummaryCards({ data, unitPercent }: SummaryCardsProps) {
       </SummaryCardLink>
 
       <SummaryCardLink
-        href="#section-egresos-expensas"
-        ariaLabel="Ir a gráfico de egresos vs expensas cobradas"
+        href="#section-evolucion"
+        ariaLabel="Ir a gráfico de evolución"
       >
         <Card className="h-full cursor-pointer transition-shadow group-hover/summary:shadow-md group-hover/summary:ring-foreground/15">
           <CardHeader className="pb-2">
@@ -96,23 +94,20 @@ export function SummaryCards({ data, unitPercent }: SummaryCardsProps) {
         </Card>
       </SummaryCardLink>
 
-      <SummaryCardLink href="#section-tu-expensa" ariaLabel="Ir a gráfico de tu expensa por mes">
+      <SummaryCardLink href="#section-balance" ariaLabel="Ir a balance cobrado vs gastado">
         <Card className="h-full cursor-pointer transition-shadow group-hover/summary:shadow-md group-hover/summary:ring-foreground/15">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Tu Expensa ({unitPercent}%)
+              Balance (cobrado − gastado)
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-xl sm:text-2xl font-bold font-mono">{formatCurrency(unitLast)}</div>
-            <div className="flex items-center gap-1 mt-1">
-              <Badge variant={variacionUnit > 0 ? "destructive" : "secondary"} className="text-xs">
-                {formatPercent(variacionUnit)}
-              </Badge>
-              <span className="text-xs text-muted-foreground">
-                desde {formatCurrency(unitFirst)}
-              </span>
+            <div className={`text-xl sm:text-2xl font-bold font-mono ${balance < 0 ? "text-red-400" : "text-emerald-400"}`}>
+              {balance >= 0 ? "+" : ""}{formatCurrency(balance)}
             </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              Cobrado: {formatCurrency(totalCobrado)}
+            </p>
           </CardContent>
         </Card>
       </SummaryCardLink>
