@@ -12,6 +12,7 @@ export const MOBILE_NAV_SECTIONS = [
   { href: "#section-tu-expensa", label: "Tu expensa" },
   { href: "#section-categorias", label: "Gasto por categoría" },
   { href: "#section-comparador", label: "Comparador" },
+  { href: "#section-balance", label: "Balance cobrado vs gastado" },
   { href: "#section-detalle", label: "Detalle por mes" },
   { href: "#section-proyeccion", label: "Proyección" },
   { href: "#section-benchmark", label: "Vs. promedios nacionales" },
