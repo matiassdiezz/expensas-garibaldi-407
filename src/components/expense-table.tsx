@@ -23,6 +23,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { LiquidacionDetail } from "@/components/liquidacion-detail";
 import { MonthData, CATEGORY_LABELS, ExpenseCategory } from "@/types/expense";
 import {
   formatCurrency,
@@ -249,6 +250,9 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
                         );
                       })}
                     </div>
+
+                    {/* Liquidación oficial */}
+                    <LiquidacionDetail month={month.month} />
 
                     {/* Desktop layout */}
                     <div className="hidden sm:block overflow-x-auto">
