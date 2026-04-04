@@ -77,59 +77,61 @@ export function MonthComparison({ data }: MonthComparisonProps) {
           </Select>
         </div>
 
-        <div className="rounded-lg border border-border overflow-hidden">
-          <div className="grid grid-cols-4 gap-2 p-3 bg-muted/50 text-xs font-medium text-muted-foreground">
-            <span>Categoría</span>
-            <span className="text-right">{dataA.label.split(" ")[0]}</span>
-            <span className="text-right">{dataB.label.split(" ")[0]}</span>
-            <span className="text-right">Variación</span>
-          </div>
-          {comparison.map((row) => (
-            <div
-              key={row.category}
-              className={`grid grid-cols-4 gap-2 p-3 border-t border-border text-sm ${
-                Math.abs(row.change) > 30 ? "bg-destructive/5" : ""
-              }`}
-            >
-              <span className="text-muted-foreground text-xs">
-                {CATEGORY_LABELS[row.category]}
+        <div className="rounded-lg border border-border overflow-x-auto">
+          <div className="min-w-[400px]">
+            <div className="grid grid-cols-[1fr_80px_80px_70px] gap-1 p-3 bg-muted/50 text-xs font-medium text-muted-foreground">
+              <span>Categoría</span>
+              <span className="text-right">{dataA.label.split(" ")[0]}</span>
+              <span className="text-right">{dataB.label.split(" ")[0]}</span>
+              <span className="text-right">Var.</span>
+            </div>
+            {comparison.map((row) => (
+              <div
+                key={row.category}
+                className={`grid grid-cols-[1fr_80px_80px_70px] gap-1 p-3 border-t border-border text-sm ${
+                  Math.abs(row.change) > 30 ? "bg-destructive/5" : ""
+                }`}
+              >
+                <span className="text-muted-foreground text-xs">
+                  {CATEGORY_LABELS[row.category]}
+                </span>
+                <span className="text-right font-mono text-xs">
+                  {formatCurrency(row.totalA)}
+                </span>
+                <span className="text-right font-mono text-xs">
+                  {formatCurrency(row.totalB)}
+                </span>
+                <span className="text-right">
+                  {row.totalA > 0 ? (
+                    <Badge
+                      variant={row.change > 30 ? "destructive" : "secondary"}
+                      className="text-xs font-mono"
+                    >
+                      {formatPercent(row.change)}
+                    </Badge>
+                  ) : (
+                    <span className="text-xs text-muted-foreground">nuevo</span>
+                  )}
+                </span>
+              </div>
+            ))}
+            <div className="grid grid-cols-[1fr_80px_80px_70px] gap-1 p-3 border-t border-border bg-muted/30 font-medium">
+              <span className="text-sm">Total</span>
+              <span className="text-right font-mono text-sm">
+                {formatCurrency(dataA.total)}
               </span>
-              <span className="text-right font-mono text-xs">
-                {formatCurrency(row.totalA)}
-              </span>
-              <span className="text-right font-mono text-xs">
-                {formatCurrency(row.totalB)}
+              <span className="text-right font-mono text-sm">
+                {formatCurrency(dataB.total)}
               </span>
               <span className="text-right">
-                {row.totalA > 0 ? (
-                  <Badge
-                    variant={row.change > 30 ? "destructive" : "secondary"}
-                    className="text-xs font-mono"
-                  >
-                    {formatPercent(row.change)}
-                  </Badge>
-                ) : (
-                  <span className="text-xs text-muted-foreground">nuevo</span>
-                )}
+                <Badge
+                  variant={totalChange > 10 ? "destructive" : "secondary"}
+                  className="text-xs font-mono"
+                >
+                  {formatPercent(totalChange)}
+                </Badge>
               </span>
             </div>
-          ))}
-          <div className="grid grid-cols-4 gap-2 p-3 border-t border-border bg-muted/30 font-medium">
-            <span className="text-sm">Total</span>
-            <span className="text-right font-mono text-sm">
-              {formatCurrency(dataA.total)}
-            </span>
-            <span className="text-right font-mono text-sm">
-              {formatCurrency(dataB.total)}
-            </span>
-            <span className="text-right">
-              <Badge
-                variant={totalChange > 10 ? "destructive" : "secondary"}
-                className="text-xs font-mono"
-              >
-                {formatPercent(totalChange)}
-              </Badge>
-            </span>
           </div>
         </div>
       </CardContent>

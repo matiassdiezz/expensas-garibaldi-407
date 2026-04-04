@@ -76,16 +76,16 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
                 onOpenChange={() => toggle(month.month)}
               >
                 <CollapsibleTrigger className="w-full">
-                  <div className="flex items-center justify-between rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors cursor-pointer">
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm font-medium">{month.label}</span>
+                  <div className="flex items-center justify-between rounded-lg border border-border p-3 sm:p-4 hover:bg-muted/50 transition-colors cursor-pointer gap-2">
+                    <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                      <span className="text-xs sm:text-sm font-medium whitespace-nowrap">{month.label}</span>
                       {anomalies.length > 0 && (
-                        <Badge variant="destructive" className="text-xs">
+                        <Badge variant="destructive" className="text-xs hidden sm:inline-flex">
                           {anomalies.length} anomalía{anomalies.length > 1 ? "s" : ""}
                         </Badge>
                       )}
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                       {prevMonth && (
                         <Badge
                           variant={change > 10 ? "destructive" : "secondary"}
@@ -94,7 +94,7 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
                           {formatPercent(change)}
                         </Badge>
                       )}
-                      <span className="text-sm font-bold font-mono">
+                      <span className="text-xs sm:text-sm font-bold font-mono">
                         {formatCurrency(month.total)}
                       </span>
                       <span className="text-muted-foreground text-xs">
@@ -104,15 +104,15 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
                   </div>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <div className="border border-t-0 border-border rounded-b-lg overflow-hidden">
-                    <Table className="table-fixed w-full">
+                  <div className="border border-t-0 border-border rounded-b-lg overflow-x-auto">
+                    <Table className="table-fixed w-full min-w-[480px]">
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="w-[130px]">Categoría</TableHead>
+                          <TableHead className="w-[110px]">Categoría</TableHead>
                           <TableHead>Descripción</TableHead>
-                          <TableHead className="text-right w-[100px]">Monto</TableHead>
+                          <TableHead className="text-right w-[90px]">Monto</TableHead>
                           {prevMonth && (
-                            <TableHead className="text-right w-[70px]">Var.</TableHead>
+                            <TableHead className="text-right w-[60px]">Var.</TableHead>
                           )}
                         </TableRow>
                       </TableHeader>

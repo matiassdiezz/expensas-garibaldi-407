@@ -25,7 +25,7 @@ export function Dashboard() {
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+        <h1 className="text-xl font-bold tracking-tight sm:text-2xl md:text-3xl">
           Expensas Garibaldi 407/411
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">

@@ -36,7 +36,7 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
           <CardTitle className="text-base">Egresos vs Expensas Cobradas</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[300px]">
+          <div className="h-[220px] sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 10%)" />
@@ -90,7 +90,7 @@ export function MonthlyChart({ data, unitPercent }: MonthlyChartProps) {
           <CardTitle className="text-base">Tu Expensa ({unitPercent}%)</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-[200px]">
+          <div className="h-[160px] sm:h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 10%)" />

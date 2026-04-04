@@ -106,7 +106,7 @@ export function Benchmark() {
         {/* Expensa por unidad */}
         <div>
           <h3 className="text-sm font-medium mb-3">Expensa promedio por departamento</h3>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <MetricCard
               label="Tu edificio"
               value={formatCurrency(expensaPerUnit)}
@@ -129,7 +129,7 @@ export function Benchmark() {
         {/* Aumento vs inflación */}
         <div>
           <h3 className="text-sm font-medium mb-3">Aumento acumulado vs inflación</h3>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <MetricCard
               label="Tu edificio"
               value={`+${aumentoAcumulado.toFixed(1)}%`}
@@ -154,12 +154,13 @@ export function Benchmark() {
           <h3 className="text-sm font-medium mb-3">
             Composición por rubro ({lastMonth.label})
           </h3>
-          <div className="space-y-2">
-            <div className="grid grid-cols-[1fr_80px_80px_80px] gap-2 text-xs text-muted-foreground font-medium px-1">
+          <div className="space-y-2 overflow-x-auto">
+            <div className="min-w-[380px]">
+            <div className="grid grid-cols-[1fr_70px_70px_70px] gap-2 text-xs text-muted-foreground font-medium px-1">
               <span>Rubro</span>
-              <span className="text-right">Tu edificio</span>
-              <span className="text-right">Promedio</span>
-              <span className="text-right">Diferencia</span>
+              <span className="text-right">Tu edif.</span>
+              <span className="text-right">Prom.</span>
+              <span className="text-right">Dif.</span>
             </div>
             {ourCategories.map(({ key, amount }) => {
               const benchmark = BENCHMARK.categoryBenchmarks[key];
@@ -172,7 +173,7 @@ export function Benchmark() {
               return (
                 <div
                   key={key}
-                  className={`grid grid-cols-[1fr_80px_80px_80px] gap-2 items-center rounded px-2 py-1.5 text-sm ${
+                  className={`grid grid-cols-[1fr_70px_70px_70px] gap-2 items-center rounded px-2 py-1.5 text-sm ${
                     isHigh ? "bg-destructive/10" : ""
                   }`}
                 >
@@ -195,13 +196,14 @@ export function Benchmark() {
                 </div>
               );
             })}
+            </div>
           </div>
         </div>
 
         {/* Honorarios admin */}
         <div>
           <h3 className="text-sm font-medium mb-3">Honorarios de Administración</h3>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <MetricCard
               label="Andrade cobra"
               value={formatCurrency(adminFee)}

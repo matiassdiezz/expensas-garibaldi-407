@@ -47,7 +47,7 @@ export function SummaryCards({ data, unitPercent }: SummaryCardsProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold font-mono">{formatCurrency(totalEgresos)}</div>
+          <div className="text-xl sm:text-2xl font-bold font-mono">{formatCurrency(totalEgresos)}</div>
           <p className="text-xs text-muted-foreground mt-1">
             Promedio: {formatCurrency(promedioEgresos)}/mes
           </p>
@@ -61,7 +61,7 @@ export function SummaryCards({ data, unitPercent }: SummaryCardsProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold font-mono">{formatCurrency(expensasALast)}</div>
+          <div className="text-xl sm:text-2xl font-bold font-mono">{formatCurrency(expensasALast)}</div>
           <div className="flex items-center gap-1 mt-1">
             <Badge variant={variacionExpensasA > 0 ? "destructive" : "secondary"} className="text-xs">
               {formatPercent(variacionExpensasA)}
@@ -80,7 +80,7 @@ export function SummaryCards({ data, unitPercent }: SummaryCardsProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold font-mono">{formatCurrency(unitLast)}</div>
+          <div className="text-xl sm:text-2xl font-bold font-mono">{formatCurrency(unitLast)}</div>
           <div className="flex items-center gap-1 mt-1">
             <Badge variant={variacionUnit > 0 ? "destructive" : "secondary"} className="text-xs">
               {formatPercent(variacionUnit)}
@@ -99,7 +99,7 @@ export function SummaryCards({ data, unitPercent }: SummaryCardsProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold font-mono">{formatCurrency(mesMasCaro.total)}</div>
+          <div className="text-xl sm:text-2xl font-bold font-mono">{formatCurrency(mesMasCaro.total)}</div>
           <p className="text-xs text-muted-foreground mt-1">{mesMasCaro.label}</p>
         </CardContent>
       </Card>
