@@ -37,7 +37,7 @@ export function CategoryChart({ data }: CategoryChartProps) {
       <CardContent>
         <div className="h-[220px] sm:h-[300px] overflow-hidden">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData} layout="vertical">
+            <BarChart data={chartData} layout="vertical" margin={{ right: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 10%)" horizontal={false} />
               <XAxis
                 type="number"
