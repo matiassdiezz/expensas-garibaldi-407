@@ -1,10 +1,9 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MonthData } from "@/types/expense";
+import type { LiquidacionFull } from "@/types/expense";
 import { formatCurrency } from "@/lib/utils";
 import { useMobile } from "@/lib/use-mobile";
-import liquidacionesRaw from "@/lib/liquidaciones.json";
 import {
   LineChart,
   Line,
@@ -16,10 +15,8 @@ import {
   Legend,
 } from "recharts";
 
-const liquidaciones = liquidacionesRaw.liquidaciones;
-
 interface MonthlyChartProps {
-  data: MonthData[];
+  data: LiquidacionFull[];
 }
 
 export function MonthlyChart({ data }: MonthlyChartProps) {
@@ -28,12 +25,11 @@ export function MonthlyChart({ data }: MonthlyChartProps) {
   const chartData = data.map((m) => {
     const [mes, anio] = m.label.split(" ");
     const short = mes.slice(0, 3);
-    const liq = liquidaciones.find((l) => l.liquidacion === m.month);
     return {
       name: `${short} ${anio.slice(2)}`,
       egresos: m.total,
       expensas: m.expensasA,
-      caja: liq?.cashFlow.saldoFinal ?? null,
+      caja: m.cashFlow?.saldoFinal ?? null,
     };
   });
 

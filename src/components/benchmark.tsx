@@ -2,9 +2,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { expensasData } from "@/lib/data";
 import { formatCurrency, getCategoryTotals, formatPercent } from "@/lib/utils";
-import { ExpenseCategory } from "@/types/expense";
+import { ExpenseCategory, type LiquidacionFull } from "@/types/expense";
 
 // Promedios nacionales Febrero 2026 — Fuente: Octopus Proptech / Infobae
 // https://www.infobae.com/economia/2026/03/12/las-expensas-subieron-3836-interanual/
@@ -36,9 +35,9 @@ const BENCHMARK = {
 
 const NUM_APARTMENTS = 14; // UF con departamento (sin cocheras sueltas)
 
-export function Benchmark() {
-  const lastMonth = expensasData[expensasData.length - 1];
-  const firstMonth = expensasData[0];
+export function Benchmark({ data }: { data: LiquidacionFull[] }) {
+  const lastMonth = data[data.length - 1];
+  const firstMonth = data[0];
 
   // Expensa promedio por depto en este edificio
   const expensaPerUnit = lastMonth.expensasA / NUM_APARTMENTS;

@@ -2,10 +2,9 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MonthData } from "@/types/expense";
+import type { LiquidacionFull } from "@/types/expense";
 import { formatCurrency } from "@/lib/utils";
 import { useMobile } from "@/lib/use-mobile";
-import liquidacionesRaw from "@/lib/liquidaciones.json";
 import {
   AreaChart,
   Area,
@@ -19,10 +18,8 @@ import {
   Line,
 } from "recharts";
 
-const liquidaciones = liquidacionesRaw.liquidaciones;
-
 interface BalanceTrackerProps {
-  data: MonthData[];
+  data: LiquidacionFull[];
 }
 
 export function BalanceTracker({ data }: BalanceTrackerProps) {
@@ -36,11 +33,9 @@ export function BalanceTracker({ data }: BalanceTrackerProps) {
     const saldo = cobrado - gastado;
     cumulative += saldo;
 
-    // Find matching cash flow data from liquidaciones.json
-    const liq = liquidaciones.find((l) => l.liquidacion === m.month);
-    const saldoCaja = liq?.cashFlow.saldoFinal ?? null;
-    const ingresosReales = liq?.cashFlow.ingresos ?? null;
-    const extras = liq?.cashFlow.extras ?? [];
+    const saldoCaja = m.cashFlow?.saldoFinal ?? null;
+    const ingresosReales = m.cashFlow?.ingresos ?? null;
+    const extras = m.cashFlow?.extras ?? [];
 
     return {
       name: `${m.label.split(" ")[0].slice(0, 3)} ${m.label.split(" ")[1]?.slice(2) ?? ""}`,

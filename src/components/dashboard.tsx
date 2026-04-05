@@ -1,6 +1,6 @@
 "use client";
 
-import { expensasData } from "@/lib/data";
+import type { LiquidacionFull } from "@/types/expense";
 import { SummaryCards } from "@/components/summary-cards";
 import { MonthlyChart } from "@/components/monthly-chart";
 import { CategoryChart } from "@/components/category-chart";
@@ -12,8 +12,11 @@ import { Benchmark } from "@/components/benchmark";
 import { Separator } from "@/components/ui/separator";
 import { MobileSectionNav } from "@/components/mobile-section-nav";
 
-export function Dashboard() {
-  const data = expensasData;
+interface DashboardProps {
+  data: LiquidacionFull[];
+}
+
+export function Dashboard({ data }: DashboardProps) {
   const firstMonth = data[0]?.label ?? "";
   const lastMonth = data[data.length - 1]?.label ?? "";
 
@@ -77,14 +80,14 @@ export function Dashboard() {
 
       {/* Benchmark comparison */}
       <section id="section-benchmark" className="scroll-mt-6">
-        <Benchmark />
+        <Benchmark data={data} />
       </section>
 
       <Separator className="my-8" />
 
       {/* Admin notices */}
       <section id="section-comunicados" className="scroll-mt-6">
-        <AdminNotices />
+        <AdminNotices data={data} />
       </section>
 
       {/* Footer */}

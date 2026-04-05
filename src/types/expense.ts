@@ -36,6 +36,32 @@ export const CATEGORY_LABELS: Record<ExpenseCategory, string> = {
   administracion: "I · Administración",
 };
 
+// Extended types for full liquidacion data (DB-backed)
+
+export interface CashFlow {
+  saldoAnterior: number;
+  saldoAnteriorFecha?: string;
+  ingresos: number;
+  egresos: number;
+  extras: Array<{ tipo?: string; monto: number; descripcion: string }>;
+  saldoFinal: number;
+}
+
+export interface Prorrateo {
+  expensasA: number;
+  expensasB: number;
+  totalAPagar: number;
+}
+
+export interface LiquidacionFull extends MonthData {
+  periodo?: string;
+  vencimiento?: string;
+  cashFlow?: CashFlow;
+  prorrateo?: Prorrateo;
+  egresosPorSeccion?: Record<string, number>;
+  aviso?: string;
+}
+
 export const CATEGORY_COLORS: Record<ExpenseCategory, string> = {
   sueldos: "oklch(0.65 0.2 250)",
   "cargas-sociales": "oklch(0.6 0.18 280)",

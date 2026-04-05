@@ -3,9 +3,7 @@
 import { formatCurrency } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import liquidacionesRaw from "@/lib/liquidaciones.json";
-
-const liquidaciones = liquidacionesRaw.liquidaciones;
+import type { LiquidacionFull } from "@/types/expense";
 
 const SECCION_LABELS: Record<string, string> = {
   A_sueldos: "A) Sueldos y Jornales",
@@ -20,15 +18,16 @@ const SECCION_LABELS: Record<string, string> = {
 };
 
 interface LiquidacionDetailProps {
+  data: LiquidacionFull[];
   month: string;
 }
 
-export function LiquidacionDetail({ month }: LiquidacionDetailProps) {
-  const liq = liquidaciones.find((l) => l.liquidacion === month);
-  if (!liq) return null;
+export function LiquidacionDetail({ data, month }: LiquidacionDetailProps) {
+  const liq = data.find((d) => d.month === month);
+  if (!liq || !liq.cashFlow || !liq.prorrateo) return null;
 
-  const { cashFlow, prorrateo, egresos, aviso } = liq;
-  const secciones = egresos.secciones as Record<string, number>;
+  const { cashFlow, prorrateo, egresosPorSeccion, aviso } = liq;
+  const secciones = egresosPorSeccion ?? {};
 
   return (
     <div className="bg-muted/30 border-t border-border px-3 py-4 sm:px-5 space-y-4">
@@ -37,7 +36,7 @@ export function LiquidacionDetail({ month }: LiquidacionDetailProps) {
           Liquidación oficial
         </h4>
         <Badge variant="outline" className="text-[10px]">
-          Vto: {new Date(liq.vencimiento).toLocaleDateString("es-AR")}
+          Vto: {liq.vencimiento ? new Date(liq.vencimiento).toLocaleDateString("es-AR") : "—"}
         </Badge>
       </div>
 
@@ -121,12 +120,12 @@ export function LiquidacionDetail({ month }: LiquidacionDetailProps) {
       {/* Egresos por sección */}
       <div>
         <p className="text-[11px] font-medium text-muted-foreground mb-2">
-          Egresos por Sección — Total: {formatCurrency(egresos.total)}
+          Egresos por Sección — Total: {formatCurrency(liq.total)}
         </p>
         <div className="space-y-1">
           {Object.entries(secciones).map(([key, value]) => {
             if (value === 0) return null;
-            const pct = ((value / egresos.total) * 100).toFixed(1);
+            const pct = ((value / liq.total) * 100).toFixed(1);
             return (
               <div key={key} className="flex items-center gap-2 text-xs">
                 <span className="w-[200px] sm:w-[240px] truncate text-muted-foreground">
