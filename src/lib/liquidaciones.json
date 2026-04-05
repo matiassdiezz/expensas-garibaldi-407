@@ -56,6 +56,39 @@
       "aviso": "Se normalizaron las facturas de AySA y llegaron los créditos por lo que se pagó en exceso y la refacturación de las facturas. Comenzaremos con obras de mantenimiento necesarias en el edificio para evitar que siga deteriorándose y evitar problemas."
     },
     {
+      "liquidacion": "2025-04",
+      "periodo": "Marzo 2025",
+      "vencimiento": "2025-04-10",
+      "cashFlow": {
+        "saldoAnterior": 823162.04,
+        "saldoAnteriorFecha": "2025-02-28",
+        "ingresos": 2056825.00,
+        "egresos": 1367027.21,
+        "extras": [],
+        "saldoFinal": 1512959.83
+      },
+      "prorrateo": {
+        "expensasA": 2000000,
+        "expensasB": 0,
+        "totalAPagar": 1943175.00
+      },
+      "egresos": {
+        "total": 1367027.21,
+        "secciones": {
+          "A_sueldos": 254865.00,
+          "B_cargas_sociales": 191247.10,
+          "C_servicios_publicos": 238347.27,
+          "D_abonos_servicios": 492357.10,
+          "E_mantenimiento": 0,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 62519.51,
+          "H_seguros_gastos": 27691.23,
+          "I_administracion": 100000.00
+        }
+      },
+      "aviso": "Se han solicitado presupuestos y se están consultando profesionales para elaborar un plan de obra para ir arreglando las instalaciones del edificio, los porteros, las rajaduras exteriores, los revoques interiores. Se deben determinar el origen del problema y encarar los problemas pronto para poder dejar las cosas bien y que se mantengan mejor."
+    },
+    {
       "liquidacion": "2025-05",
       "periodo": "Abril 2025",
       "vencimiento": "2025-05-10",
