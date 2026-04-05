@@ -17,10 +17,10 @@ export function AdminNotices({ data }: { data: LiquidacionFull[] }) {
     <Card>
       <CardHeader>
         <CardTitle className="text-base">
-          Comunicados de la Administración
+          ¿Qué dijo la administración?
         </CardTitle>
         <p className="text-xs text-muted-foreground">
-          Avisos textuales extraídos de cada liquidación oficial
+          Avisos extraídos de las liquidaciones oficiales
         </p>
       </CardHeader>
       <CardContent>

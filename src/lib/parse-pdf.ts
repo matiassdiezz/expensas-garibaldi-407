@@ -107,6 +107,11 @@ export async function parsePdf(
 
   const parsed = JSON.parse(text) as LiquidacionFull;
 
+  // Validate month format (LLM could return "March 2026" instead of "2026-03")
+  if (!/^\d{4}-\d{2}$/.test(parsed.month)) {
+    throw new Error(`Formato de month inválido: "${parsed.month}" — esperado YYYY-MM`);
+  }
+
   // Validate categories
   for (const item of parsed.items) {
     if (!VALID_CATEGORIES.includes(item.category)) {

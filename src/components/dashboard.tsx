@@ -2,13 +2,13 @@
 
 import type { LiquidacionFull } from "@/types/expense";
 import { SummaryCards } from "@/components/summary-cards";
+import { CategoryOverview } from "@/components/category-overview";
 import { MonthlyChart } from "@/components/monthly-chart";
-import { CategoryChart } from "@/components/category-chart";
-import { ExpenseTable } from "@/components/expense-table";
-import { Forecast } from "@/components/forecast";
-import { BalanceTracker } from "@/components/balance-tracker";
-import { AdminNotices } from "@/components/admin-notices";
 import { Benchmark } from "@/components/benchmark";
+import { ExpenseTable } from "@/components/expense-table";
+import { BalanceTracker } from "@/components/balance-tracker";
+import { Forecast } from "@/components/forecast";
+import { AdminNotices } from "@/components/admin-notices";
 import { Separator } from "@/components/ui/separator";
 import { MobileSectionNav } from "@/components/mobile-section-nav";
 
@@ -40,52 +40,52 @@ export function Dashboard({ data }: DashboardProps) {
         </div>
       </div>
 
-      {/* Summary */}
+      {/* 1. Summary — la foto rápida */}
       <section id="section-resumen" className="scroll-mt-6">
         <SummaryCards data={data} />
       </section>
 
       <Separator className="my-8" />
 
-      {/* Evolution chart: egresos vs expensas vs caja */}
+      {/* 2. ¿En qué se gasta? — la respuesta principal */}
+      <CategoryOverview data={data} />
+
+      <Separator className="my-8" />
+
+      {/* 3. ¿Por qué sube? — la película */}
       <MonthlyChart data={data} />
 
       <Separator className="my-8" />
 
-      {/* Balance tracker */}
-      <section id="section-balance" className="scroll-mt-6">
-        <BalanceTracker data={data} />
-      </section>
-
-      <Separator className="my-8" />
-
-      {/* Detail table */}
-      <section id="section-detalle" className="scroll-mt-6">
-        <ExpenseTable data={data} />
-      </section>
-
-      <Separator className="my-8" />
-
-      {/* Category pie chart */}
-      <CategoryChart data={data} />
-
-      <Separator className="my-8" />
-
-      {/* Forecast */}
-      <section id="section-proyeccion" className="scroll-mt-6">
-        <Forecast data={data} unitPercent={6.4} />
-      </section>
-
-      <Separator className="my-8" />
-
-      {/* Benchmark comparison */}
+      {/* 4. ¿Es normal? — contexto nacional */}
       <section id="section-benchmark" className="scroll-mt-6">
         <Benchmark data={data} />
       </section>
 
       <Separator className="my-8" />
 
-      {/* Admin notices */}
+      {/* 5. Rendición mes a mes — el detalle */}
+      <section id="section-detalle" className="scroll-mt-6">
+        <ExpenseTable data={data} />
+      </section>
+
+      <Separator className="my-8" />
+
+      {/* 6. ¿Se cobra lo que se gasta? — balance */}
+      <section id="section-balance" className="scroll-mt-6">
+        <BalanceTracker data={data} />
+      </section>
+
+      <Separator className="my-8" />
+
+      {/* 7. ¿Cuánto viene? — proyección */}
+      <section id="section-proyeccion" className="scroll-mt-6">
+        <Forecast data={data} unitPercent={6.4} />
+      </section>
+
+      <Separator className="my-8" />
+
+      {/* 8. ¿Qué dijo la administración? */}
       <section id="section-comunicados" className="scroll-mt-6">
         <AdminNotices data={data} />
       </section>

@@ -57,7 +57,7 @@ export function ExpenseTable({ data }: ExpenseTableProps) {
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between gap-2">
-          <CardTitle className="text-base">Detalle por Mes</CardTitle>
+          <CardTitle className="text-base">Rendición de cada mes</CardTitle>
           <Select
             value={categoryFilter ?? "all"}
             onValueChange={(v) =>

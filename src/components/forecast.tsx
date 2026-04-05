@@ -62,9 +62,22 @@ function getRecurringEstimate(
   return Math.round(nonZero.reduce((a, b) => a + b, 0) / nonZero.length);
 }
 
+const MONTH_NAMES = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+];
+
+function getNextMonthLabel(monthStr: string): string {
+  const [year, month] = monthStr.split("-").map(Number);
+  const nextMonth = month === 12 ? 1 : month + 1;
+  const nextYear = month === 12 ? year + 1 : year;
+  return `${MONTH_NAMES[nextMonth - 1]} ${nextYear}`;
+}
+
 export function Forecast({ data, unitPercent }: ForecastProps) {
   const lastMonth = data[data.length - 1];
   const prevMonth = data.length > 1 ? data[data.length - 2] : null;
+  const nextMonthLabel = getNextMonthLabel(lastMonth.month);
 
   // 1. Pending installments
   const pendingInstallments = parseInstallments(lastMonth);
@@ -120,10 +133,10 @@ export function Forecast({ data, unitPercent }: ForecastProps) {
     <Card>
       <CardHeader>
         <CardTitle className="text-base">
-          Proyección Abril 2026
+          ¿Cuánto viene el mes que viene?
         </CardTitle>
         <p className="text-xs text-muted-foreground">
-          Estimado basado en promedio de últimos 3 meses + cuotas pendientes
+          Proyección {nextMonthLabel} · promedio de últimos 3 meses + cuotas pendientes
         </p>
       </CardHeader>
       <CardContent className="space-y-6">

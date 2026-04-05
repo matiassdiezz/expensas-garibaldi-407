@@ -94,11 +94,10 @@ export function Benchmark({ data }: { data: LiquidacionFull[] }) {
     <Card>
       <CardHeader>
         <CardTitle className="text-base">
-          Comparación con Promedios Nacionales
+          ¿Pagamos más que otros edificios?
         </CardTitle>
         <p className="text-xs text-muted-foreground">
-          Datos de {lastMonth.label} vs promedios nacionales (Feb 2026, Octopus
-          Proptech)
+          Tu edificio vs promedios nacionales · {lastMonth.label} · Fuente: Octopus Proptech
         </p>
       </CardHeader>
       <CardContent className="space-y-6">

@@ -3,11 +3,22 @@
 import type { ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MonthData } from "@/types/expense";
-import { cn, formatCurrency, formatPercent, getMonthOverMonthChange } from "@/lib/utils";
+import type { LiquidacionFull } from "@/types/expense";
+import {
+  CATEGORY_LABELS,
+  CATEGORY_COLORS,
+  type ExpenseCategory,
+} from "@/types/expense";
+import {
+  cn,
+  formatCurrency,
+  formatPercent,
+  getMonthOverMonthChange,
+  getMonthCategoryTotal,
+} from "@/lib/utils";
 
 interface SummaryCardsProps {
-  data: MonthData[];
+  data: LiquidacionFull[];
 }
 
 function SummaryCardLink({
@@ -34,97 +45,187 @@ function SummaryCardLink({
 }
 
 export function SummaryCards({ data }: SummaryCardsProps) {
-  const totalEgresos = data.reduce((sum, m) => sum + m.total, 0);
-  const promedioEgresos = totalEgresos / data.length;
+  const lastMonth = data[data.length - 1];
+  const prevMonth = data.length > 1 ? data[data.length - 2] : null;
 
-  // Variación expensas A (prorrateo) primer vs último mes
-  const expensasAFirst = data[0].expensasA;
-  const expensasALast = data[data.length - 1].expensasA;
-  const variacionExpensasA = getMonthOverMonthChange(expensasALast, expensasAFirst);
+  // 1. Expensa actual + variación
+  const expensasALast = lastMonth.expensasA;
+  const expensasAChange = prevMonth
+    ? getMonthOverMonthChange(expensasALast, prevMonth.expensasA)
+    : 0;
 
-  // Mes con mayor gasto
-  const mesMasCaro = data.reduce((max, m) => (m.total > max.total ? m : max), data[0]);
+  // 2. Mayor rubro (categoría con más peso en último mes)
+  const categories = Object.keys(CATEGORY_LABELS) as ExpenseCategory[];
+  const categoryTotalsLastMonth = categories.map((cat) => ({
+    cat,
+    total: getMonthCategoryTotal(lastMonth, cat),
+  }));
+  const topCategory = categoryTotalsLastMonth.reduce((max, c) =>
+    c.total > max.total ? c : max
+  );
+  const topCatPercent = lastMonth.total > 0
+    ? (topCategory.total / lastMonth.total) * 100
+    : 0;
+  const shortLabel = (cat: ExpenseCategory) =>
+    CATEGORY_LABELS[cat].replace(/^[A-I] · /, "");
 
-  // Total cobrado vs gastado
-  const totalCobrado = data.reduce((sum, m) => sum + m.expensasA, 0);
-  const balance = totalCobrado - totalEgresos;
+  // 3. Lo que más subió (mayor variación % vs mes anterior)
+  let biggestRise: {
+    cat: ExpenseCategory;
+    change: number;
+    amount: number;
+  } | null = null;
+  if (prevMonth) {
+    for (const cat of categories) {
+      const current = getMonthCategoryTotal(lastMonth, cat);
+      const previous = getMonthCategoryTotal(prevMonth, cat);
+      if (previous > 0 && current > 0) {
+        const change = getMonthOverMonthChange(current, previous);
+        if (!biggestRise || change > biggestRise.change) {
+          biggestRise = { cat, change, amount: current };
+        }
+      }
+    }
+  }
+
+  // 4. Estado del edificio — superávit o déficit
+  const totalCobrado = data.reduce(
+    (s, m) => s + (m.cashFlow?.ingresos ?? m.expensasA),
+    0
+  );
+  const totalGastado = data.reduce((s, m) => s + m.total, 0);
+  const balance = totalCobrado - totalGastado;
+  const isPositive = balance >= 0;
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <SummaryCardLink
-        href="#section-categorias"
-        ariaLabel="Ir a gasto por categoría acumulado"
-      >
-        <Card className="h-full cursor-pointer transition-shadow group-hover/summary:shadow-md group-hover/summary:ring-foreground/15">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Egresos ({data.length} meses)
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-xl sm:text-2xl font-bold font-mono">{formatCurrency(totalEgresos)}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Promedio: {formatCurrency(promedioEgresos)}/mes
-            </p>
-          </CardContent>
-        </Card>
-      </SummaryCardLink>
-
+      {/* Expensa actual */}
       <SummaryCardLink
         href="#section-evolucion"
-        ariaLabel="Ir a gráfico de evolución"
+        ariaLabel="Ver evolución de expensas"
       >
         <Card className="h-full cursor-pointer transition-shadow group-hover/summary:shadow-md group-hover/summary:ring-foreground/15">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Expensas Ordinarias (A)
+              Expensas del edificio
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-xl sm:text-2xl font-bold font-mono">{formatCurrency(expensasALast)}</div>
+            <div className="text-xl sm:text-2xl font-bold font-mono">
+              {formatCurrency(expensasALast)}
+            </div>
             <div className="flex items-center gap-1 mt-1">
-              <Badge variant={variacionExpensasA > 0 ? "destructive" : "secondary"} className="text-xs">
-                {formatPercent(variacionExpensasA)}
-              </Badge>
+              {prevMonth && (
+                <Badge
+                  variant={expensasAChange > 0 ? "destructive" : "secondary"}
+                  className="text-xs"
+                >
+                  {formatPercent(expensasAChange)}
+                </Badge>
+              )}
               <span className="text-xs text-muted-foreground">
-                desde {formatCurrency(expensasAFirst)}
+                {lastMonth.label}
               </span>
             </div>
           </CardContent>
         </Card>
       </SummaryCardLink>
 
-      <SummaryCardLink href="#section-balance" ariaLabel="Ir a balance cobrado vs gastado">
+      {/* Mayor rubro */}
+      <SummaryCardLink
+        href="#section-categorias"
+        ariaLabel="Ver distribución por categoría"
+      >
         <Card className="h-full cursor-pointer transition-shadow group-hover/summary:shadow-md group-hover/summary:ring-foreground/15">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Balance (cobrado − gastado)
+              Mayor gasto
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className={`text-xl sm:text-2xl font-bold font-mono ${balance < 0 ? "text-red-400" : "text-emerald-400"}`}>
-              {balance >= 0 ? "+" : ""}{formatCurrency(balance)}
+            <div className="flex items-center gap-2">
+              <span
+                className="w-3 h-3 rounded-full shrink-0"
+                style={{
+                  backgroundColor: CATEGORY_COLORS[topCategory.cat],
+                }}
+              />
+              <span className="text-base sm:text-lg font-bold truncate">
+                {shortLabel(topCategory.cat)}
+              </span>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              Cobrado: {formatCurrency(totalCobrado)}
+              {topCatPercent.toFixed(0)}% del gasto total ·{" "}
+              {formatCurrency(topCategory.total)}
             </p>
           </CardContent>
         </Card>
       </SummaryCardLink>
 
+      {/* Lo que más subió */}
       <SummaryCardLink
-        href="#section-detalle"
-        ariaLabel="Ir a detalle de gastos por mes"
+        href="#section-evolucion"
+        ariaLabel="Ver qué rubros subieron más"
       >
         <Card className="h-full cursor-pointer transition-shadow group-hover/summary:shadow-md group-hover/summary:ring-foreground/15">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Mes Más Caro (egresos)
+              Lo que más subió
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-xl sm:text-2xl font-bold font-mono">{formatCurrency(mesMasCaro.total)}</div>
-            <p className="text-xs text-muted-foreground mt-1">{mesMasCaro.label}</p>
+            {biggestRise ? (
+              <>
+                <div className="flex items-center gap-2">
+                  <span
+                    className="w-3 h-3 rounded-full shrink-0"
+                    style={{
+                      backgroundColor: CATEGORY_COLORS[biggestRise.cat],
+                    }}
+                  />
+                  <span className="text-base sm:text-lg font-bold truncate">
+                    {shortLabel(biggestRise.cat)}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 mt-1">
+                  <Badge variant="destructive" className="text-xs">
+                    {formatPercent(biggestRise.change)}
+                  </Badge>
+                  <span className="text-xs text-muted-foreground">
+                    vs mes anterior
+                  </span>
+                </div>
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground">Sin datos previos</p>
+            )}
+          </CardContent>
+        </Card>
+      </SummaryCardLink>
+
+      {/* Estado del edificio */}
+      <SummaryCardLink
+        href="#section-balance"
+        ariaLabel="Ver balance del edificio"
+      >
+        <Card className="h-full cursor-pointer transition-shadow group-hover/summary:shadow-md group-hover/summary:ring-foreground/15">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Las cuentas del edificio
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div
+              className={`text-xl sm:text-2xl font-bold font-mono ${
+                isPositive ? "text-emerald-400" : "text-red-400"
+              }`}
+            >
+              {isPositive ? "+" : ""}
+              {formatCurrency(balance)}
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {isPositive ? "Sobró" : "Faltó"} plata en {data.length} meses
+            </p>
           </CardContent>
         </Card>
       </SummaryCardLink>

@@ -7,12 +7,12 @@ import { cn } from "@/lib/utils";
 
 export const MOBILE_NAV_SECTIONS = [
   { href: "#section-resumen", label: "Resumen" },
-  { href: "#section-evolucion", label: "Evolución mensual" },
-  { href: "#section-balance", label: "Balance cobrado vs gastado" },
-  { href: "#section-detalle", label: "Detalle por mes" },
-  { href: "#section-categorias", label: "Gasto por categoría" },
-  { href: "#section-proyeccion", label: "Proyección" },
-  { href: "#section-benchmark", label: "Vs. promedios nacionales" },
+  { href: "#section-categorias", label: "¿En qué se gasta?" },
+  { href: "#section-evolucion", label: "¿Por qué sube?" },
+  { href: "#section-benchmark", label: "¿Pagamos más que otros?" },
+  { href: "#section-detalle", label: "Rendición por mes" },
+  { href: "#section-balance", label: "Balance del edificio" },
+  { href: "#section-proyeccion", label: "¿Cuánto viene?" },
   { href: "#section-comunicados", label: "Comunicados" },
 ] as const;
 
