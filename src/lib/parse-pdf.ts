@@ -1,19 +1,12 @@
 import Anthropic from "@anthropic-ai/sdk";
-import type { LiquidacionFull, ExpenseCategory } from "@/types/expense";
+import { STANDARD_CATEGORIES } from "@/types/expense";
+import type { LiquidacionFull } from "@/types/expense";
 
-const VALID_CATEGORIES: ExpenseCategory[] = [
-  "sueldos",
-  "cargas-sociales",
-  "servicios-publicos",
-  "abonos-servicios",
-  "mantenimiento",
-  "reparaciones",
-  "gastos-bancarios",
-  "seguros-gastos",
-  "administracion",
-];
+const STANDARD_CATEGORIES_SET = new Set<string>(STANDARD_CATEGORIES);
 
 const PARSE_PROMPT = `Extraé toda la información de esta liquidación de expensas de un consorcio de propietarios argentino.
+
+Este parser es genérico — funciona con cualquier edificio, administración y formato de liquidación.
 
 Respondé ÚNICAMENTE con un JSON válido (sin markdown, sin code blocks, sin explicación) con esta estructura exacta:
 
@@ -22,10 +15,9 @@ Respondé ÚNICAMENTE con un JSON válido (sin markdown, sin code blocks, sin ex
   "label": "Mes YYYY",
   "total": 0,
   "expensasA": 0,
-  "ufDiez": 0,
   "items": [
     {
-      "category": "sueldos|cargas-sociales|servicios-publicos|abonos-servicios|mantenimiento|reparaciones|gastos-bancarios|seguros-gastos|administracion",
+      "category": "una de las 15 categorías estándar (ver abajo)",
       "description": "texto descriptivo del item",
       "amount": 0
     }
@@ -46,30 +38,43 @@ Respondé ÚNICAMENTE con un JSON válido (sin markdown, sin code blocks, sin ex
     "totalAPagar": 0
   },
   "egresosPorSeccion": {
-    "A_sueldos": 0,
-    "B_cargas_sociales": 0,
-    "C_servicios_publicos": 0,
-    "D_abonos_servicios": 0,
-    "E_mantenimiento": 0,
-    "F_reparaciones": 0,
-    "G_gastos_bancarios": 0,
-    "H_seguros_gastos": 0,
-    "I_administracion": 0
+    "sueldos": 0,
+    "cargas-sociales": 0,
+    "servicios-publicos": 0
   },
   "aviso": "texto del comunicado o null"
 }
 
+Categorías estándar — mapeá cada gasto a la más cercana:
+- sueldos: Sueldos de encargados, porteros, jornales
+- cargas-sociales: Aportes patronales, ART, SUTERH, obra social, sindicato
+- servicios-publicos: Agua, luz, gas de partes comunes
+- abonos-servicios: Abonos mensuales (matafuegos, desinfección, antenas, etc.)
+- mantenimiento: Reparaciones menores, materiales, plomería, cerrajería, pintura
+- reparaciones: Obras mayores, arreglos estructurales, reparaciones grandes
+- gastos-bancarios: Comisiones bancarias, mantenimiento de cuenta, chequeras
+- seguros-gastos: Seguros del consorcio, pólizas, seguros de vida obligatorios
+- administracion: Honorarios de administración, gastos administrativos
+- impuestos: ABL, IIBB, tasas municipales, rentas
+- ascensores: Abono y reparaciones de ascensores
+- limpieza: Productos y servicios de limpieza
+- extraordinarias: Gastos extraordinarios, derrames, cuotas especiales
+- fondo-reserva: Fondo de reserva legal (5% sobre expensas ordinarias u otro %)
+- otros: Cualquier gasto que no encaje en las categorías anteriores
+
 Reglas:
-- El "month" es el mes de la liquidación (encabezado del documento), NO el período que cubre
-- La "label" es el nombre del mes de la liquidación en español (ej: "Julio 2025")
-- Cada item de gasto debe usar UNA de las 9 categorías listadas exactamente como aparecen
+- "month" es el mes de la liquidación (encabezado del documento), formato YYYY-MM
+- "label" es el nombre del mes en español con el año (ej: "Julio 2025")
+- Cada item debe usar UNA de las 15 categorías exactamente como aparecen arriba
+- Si un gasto no encaja claramente en ninguna categoría, usá "otros"
 - Los montos son números (sin $ ni puntos de miles, usar punto para decimales)
 - Si hay cuotas (ej: "Cuota 2/3"), incluirlas en la descripción
-- El "total" debe ser la suma de todos los items
-- ufDiez es el monto de la UF 26 (DIEZ, Gonzalo, 6.40%) — si no aparece, calculá 6.40% de expensasA y redondeá
+- "total" debe ser la suma de todos los items
+- "expensasA" es el total de expensas ordinarias (A) del prorrateo
 - Si no hay aviso/comunicado de la administración, usar null para "aviso"
-- "extras" en cashFlow son movimientos extraordinarios (préstamos de administración, etc.) — array vacío si no hay
-- Secciones en egresosPorSeccion: A=sueldos, B=cargas sociales, C=servicios públicos, D=abonos y servicios, E=mantenimiento, F=reparaciones, G=gastos bancarios, H=seguros y gastos, I=administración`;
+- "extras" en cashFlow son movimientos extraordinarios (préstamos, adelantos, etc.) — array vacío si no hay
+- "egresosPorSeccion" usa las categorías estándar como claves, solo incluí las que tengan monto > 0
+- Si alguna sección del PDF no existe o no aplica, omitila del JSON (los campos son opcionales)`;
 
 export async function parsePdf(
   pdfBase64: string
@@ -112,20 +117,36 @@ export async function parsePdf(
     throw new Error(`Formato de month inválido: "${parsed.month}" — esperado YYYY-MM`);
   }
 
-  // Validate categories
+  // Validate and normalize categories — map unknown ones to "otros" instead of throwing
   for (const item of parsed.items) {
-    if (!VALID_CATEGORIES.includes(item.category)) {
-      throw new Error(
-        `Categoría inválida: "${item.category}" en item "${item.description}"`
+    if (!STANDARD_CATEGORIES_SET.has(item.category)) {
+      console.warn(
+        `Categoría no estándar: "${item.category}" en item "${item.description}" — mapeada a "otros"`
       );
+      item.category = "otros";
     }
   }
 
-  // Validate total matches sum of items
+  // Normalize egresosPorSeccion keys — remap non-standard keys to "otros"
+  if (parsed.egresosPorSeccion) {
+    const normalized: Record<string, number> = {};
+    for (const [key, value] of Object.entries(parsed.egresosPorSeccion) as [string, number][]) {
+      if (STANDARD_CATEGORIES_SET.has(key)) {
+        normalized[key] = (normalized[key] ?? 0) + value;
+      } else {
+        console.warn(
+          `Sección no estándar en egresosPorSeccion: "${key}" — mapeada a "otros"`
+        );
+        normalized["otros"] = (normalized["otros"] ?? 0) + value;
+      }
+    }
+    parsed.egresosPorSeccion = normalized;
+  }
+
+  // Validate total matches sum of items — auto-correct if off
   const itemsTotal = parsed.items.reduce((sum, item) => sum + item.amount, 0);
   const diff = Math.abs(parsed.total - itemsTotal);
   if (diff > 1) {
-    // Auto-correct total to match items
     parsed.total = Math.round(itemsTotal * 100) / 100;
   }
 

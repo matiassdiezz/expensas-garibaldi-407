@@ -21,7 +21,7 @@ interface PendingInstallment {
 
 interface ForecastProps {
   data: MonthData[];
-  unitPercent: number;
+  unitPercent?: number;
 }
 
 function parseInstallments(lastMonth: MonthData): PendingInstallment[] {
@@ -127,7 +127,9 @@ export function Forecast({ data, unitPercent }: ForecastProps) {
   const totalForecast = totalRecurringEstimate;
 
   const vsLastMonth = getMonthOverMonthChange(totalForecast, lastMonth.total);
-  const forecastUnit = Math.round(totalForecast * (unitPercent / 100));
+  const forecastUnit = unitPercent
+    ? Math.round(totalForecast * (unitPercent / 100))
+    : null;
 
   return (
     <Card>
@@ -141,7 +143,7 @@ export function Forecast({ data, unitPercent }: ForecastProps) {
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Headline */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className={`grid grid-cols-1 gap-3 ${forecastUnit !== null ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>
           <div className="rounded-lg border border-primary/30 bg-primary/5 p-3">
             <p className="text-xs text-muted-foreground">Egresos estimados</p>
             <p className="text-base sm:text-lg font-bold font-mono mt-0.5">
@@ -156,14 +158,16 @@ export function Forecast({ data, unitPercent }: ForecastProps) {
               </Badge>
             )}
           </div>
-          <div className="rounded-lg border border-border p-3">
-            <p className="text-xs text-muted-foreground">
-              Tu expensa estimada ({unitPercent}%)
-            </p>
-            <p className="text-base sm:text-lg font-bold font-mono mt-0.5">
-              {formatCurrency(forecastUnit)}
-            </p>
-          </div>
+          {forecastUnit !== null && (
+            <div className="rounded-lg border border-border p-3">
+              <p className="text-xs text-muted-foreground">
+                Tu expensa estimada ({unitPercent}%)
+              </p>
+              <p className="text-base sm:text-lg font-bold font-mono mt-0.5">
+                {formatCurrency(forecastUnit)}
+              </p>
+            </div>
+          )}
           <div className="rounded-lg border border-border p-3">
             <p className="text-xs text-muted-foreground">Cuotas pendientes</p>
             <p className="text-base sm:text-lg font-bold font-mono mt-0.5">

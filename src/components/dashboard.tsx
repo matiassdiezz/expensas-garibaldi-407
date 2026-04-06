@@ -1,6 +1,6 @@
 "use client";
 
-import type { LiquidacionFull } from "@/types/expense";
+import type { LiquidacionFull, Building } from "@/types/expense";
 import { SummaryCards } from "@/components/summary-cards";
 import { CategoryOverview } from "@/components/category-overview";
 import { MonthlyChart } from "@/components/monthly-chart";
@@ -11,12 +11,14 @@ import { Forecast } from "@/components/forecast";
 import { AdminNotices } from "@/components/admin-notices";
 import { Separator } from "@/components/ui/separator";
 import { MobileSectionNav } from "@/components/mobile-section-nav";
+import Link from "next/link";
 
 interface DashboardProps {
   data: LiquidacionFull[];
+  building: Building;
 }
 
-export function Dashboard({ data }: DashboardProps) {
+export function Dashboard({ data, building }: DashboardProps) {
   const firstMonth = data[0]?.label ?? "";
   const lastMonth = data[data.length - 1]?.label ?? "";
 
@@ -24,19 +26,38 @@ export function Dashboard({ data }: DashboardProps) {
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 overflow-x-hidden">
       {/* Header */}
       <div className="mb-8">
+        <div className="mb-3">
+          <Link
+            href="/"
+            className="text-xs text-muted-foreground hover:text-foreground"
+          >
+            &larr; Todos los edificios
+          </Link>
+        </div>
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <h1 className="text-xl font-bold tracking-tight sm:text-2xl md:text-3xl">
-              Expensas Garibaldi 407/411
+              Expensas {building.name}
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              Consorcio de Propietarios · San Isidro · Administración Andrade
+              {building.address}
+              {building.adminCompany
+                ? ` · Administracion ${building.adminCompany}`
+                : ""}
             </p>
             <p className="text-sm text-muted-foreground">
               {firstMonth} – {lastMonth} · {data.length} liquidaciones
             </p>
           </div>
-          <MobileSectionNav className="md:hidden" />
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href={`/edificio/${building.slug}/upload`}
+              className="rounded-lg border border-border px-3 py-1.5 text-xs hover:bg-muted transition-colors hidden sm:inline-flex"
+            >
+              + Cargar liquidacion
+            </Link>
+            <MobileSectionNav className="md:hidden" />
+          </div>
         </div>
       </div>
 
@@ -80,7 +101,7 @@ export function Dashboard({ data }: DashboardProps) {
 
       {/* 7. ¿Cuánto viene? — proyección */}
       <section id="section-proyeccion" className="scroll-mt-6">
-        <Forecast data={data} unitPercent={6.4} />
+        <Forecast data={data} />
       </section>
 
       <Separator className="my-8" />
@@ -92,9 +113,11 @@ export function Dashboard({ data }: DashboardProps) {
 
       {/* Footer */}
       <div className="mt-12 pb-8 text-center text-xs text-muted-foreground">
-        Datos extraídos de las liquidaciones oficiales de Andrade Inmobiliaria.
+        Datos extraidos de las liquidaciones oficiales
+        {building.adminCompany ? ` de ${building.adminCompany}` : ""}.
         <br />
-        Garibaldi 407/411, San Isidro · CUIT 30-71434946-1
+        {building.name}, {building.address}
+        {building.cuit ? ` · CUIT ${building.cuit}` : ""}
       </div>
     </div>
   );

@@ -10,7 +10,6 @@ export const expensasData: MonthData[] = [
     label: "Marzo 2025",
     total: 2240951.11,
     expensasA: 2000000,
-    ufDiez: 128000,
     items: [
       { category: "sueldos", description: "Sueldo Enero 2025 (Vacaciones) – López Ayala", amount: 251099 },
       { category: "cargas-sociales", description: "AFIP F.931 SUSS / Cargas Sociales 01/2025", amount: 143789.21 },
@@ -33,7 +32,6 @@ export const expensasData: MonthData[] = [
     label: "Abril 2025",
     total: 1367027.21,
     expensasA: 2000000,
-    ufDiez: 128000,
     items: [
       { category: "sueldos", description: "Sueldo Febrero 2025 – López Ayala", amount: 254865 },
       { category: "cargas-sociales", description: "AFIP F.931 SUSS / Cargas Sociales 02/2025", amount: 146135.63 },
@@ -54,7 +52,6 @@ export const expensasData: MonthData[] = [
     label: "Mayo 2025",
     total: 2540596.75,
     expensasA: 3400000,
-    ufDiez: 217600,
     items: [
       { category: "sueldos", description: "Sueldo Marzo 2025 – López Ayala", amount: 303004 },
       { category: "cargas-sociales", description: "AFIP F.931 SUSS / Cargas Sociales 03/2025", amount: 173819.45 },
@@ -82,7 +79,6 @@ export const expensasData: MonthData[] = [
     label: "Junio 2025",
     total: 3842839.27,
     expensasA: 3400000,
-    ufDiez: 217600,
     items: [
       { category: "sueldos", description: "Sueldo Abril 2025 – López Ayala", amount: 303004 },
       { category: "cargas-sociales", description: "AFIP F.931 SUSS / Cargas Sociales 04/2025", amount: 173895.45 },
@@ -117,7 +113,6 @@ export const expensasData: MonthData[] = [
     label: "Julio 2025",
     total: 3914530.73,
     expensasA: 2800000,
-    ufDiez: 179200,
     items: [
       { category: "sueldos", description: "Sueldo Mayo 2025 – López Ayala (incluye adicionales)", amount: 487433 },
       { category: "cargas-sociales", description: "Cargas Sociales 05/2025", amount: 221598.36 },
@@ -133,7 +128,6 @@ export const expensasData: MonthData[] = [
     label: "Agosto 2025",
     total: 1494046.54,
     expensasA: 2700000,
-    ufDiez: 172800,
     items: [
       { category: "sueldos", description: "Sueldo Junio 2025 – López Ayala", amount: 303004 },
       { category: "cargas-sociales", description: "AFIP F.931 SUSS / Cargas Sociales 06/2025", amount: 279930.05 },
@@ -160,7 +154,6 @@ export const expensasData: MonthData[] = [
     label: "Septiembre 2025",
     total: 2589246.24,
     expensasA: 2700000,
-    ufDiez: 172800,
     items: [
       { category: "sueldos", description: "Sueldo Julio 2025 – López Ayala", amount: 309908 },
       { category: "cargas-sociales", description: "AFIP F.931 SUSS / Cargas Sociales 07/2025", amount: 177978.35 },
@@ -187,7 +180,6 @@ export const expensasData: MonthData[] = [
     label: "Octubre 2025",
     total: 3629453.72,
     expensasA: 2600000,
-    ufDiez: 166400,
     items: [
       { category: "sueldos", description: "Sueldo Agosto 2025 – López Ayala", amount: 313699 },
       { category: "cargas-sociales", description: "AFIP F.931 SUSS / Cargas Sociales 08/2025", amount: 180195.43 },
@@ -216,7 +208,6 @@ export const expensasData: MonthData[] = [
     label: "Noviembre 2025",
     total: 2032702.50,
     expensasA: 2600000,
-    ufDiez: 166400,
     items: [
       { category: "sueldos", description: "Sueldo Septiembre 2025 – López Ayala", amount: 318643 },
       { category: "cargas-sociales", description: "AFIP F.931 SUSS / Cargas Sociales 09/2025", amount: 183078.17 },
@@ -239,7 +230,6 @@ export const expensasData: MonthData[] = [
     label: "Diciembre 2025",
     total: 2806922.76,
     expensasA: 2600000,
-    ufDiez: 166400,
     items: [
       { category: "sueldos", description: "Sueldo Octubre 2025 – López Ayala", amount: 337037 },
       { category: "cargas-sociales", description: "AFIP F.931 SUSS / Cargas Sociales 10/2025", amount: 193663.43 },
@@ -264,7 +254,6 @@ export const expensasData: MonthData[] = [
     label: "Enero 2026",
     total: 2832591.17,
     expensasA: 2600000,
-    ufDiez: 166400,
     items: [
       { category: "sueldos", description: "Sueldo Noviembre 2025 – López Ayala", amount: 341804 },
       { category: "sueldos", description: "SAC 2do Semestre 2025 – López Ayala", amount: 209713 },
@@ -288,7 +277,6 @@ export const expensasData: MonthData[] = [
     label: "Febrero 2026",
     total: 3259227.41,
     expensasA: 3100000,
-    ufDiez: 198400,
     items: [
       { category: "sueldos", description: "Sueldo Diciembre 2025 – López Ayala", amount: 341804 },
       { category: "cargas-sociales", description: "AFIP F.931 SUSS / Cargas Sociales 12/2025", amount: 339502.5 },
@@ -314,7 +302,6 @@ export const expensasData: MonthData[] = [
     label: "Marzo 2026",
     total: 2831707.28,
     expensasA: 3313000,
-    ufDiez: 212032,
     items: [
       { category: "sueldos", description: "Sueldo Enero 2026 – López Ayala", amount: 299212 },
       { category: "cargas-sociales", description: "AFIP F.931 SUSS / Cargas Sociales 01/2026", amount: 242667.54 },
@@ -344,7 +331,6 @@ export const expensasData: MonthData[] = [
     label: "Abril 2026",
     total: 3670464.62,
     expensasA: 3700000,
-    ufDiez: 236800,
     items: [
       { category: "sueldos", description: "Sueldo Febrero 2026 – López Ayala", amount: 288811 },
       { category: "cargas-sociales", description: "AFIP F.931 SUSS / Cargas Sociales 02/2026", amount: 239995.97 },

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Expensas Garibaldi 407",
-  description: "Análisis de expensas — transparencia para los vecinos",
+  title: "Expensas Claras",
+  description: "Subi la liquidacion de tu edificio y mira a donde va tu plata",
 };
 
 export default function RootLayout({

@@ -1,5 +1,6 @@
 /**
  * Seed script — migrates existing static data (data.ts + liquidaciones.json) into Neon DB.
+ * Requires the multi-building migration (migrate.sql) to have been run first.
  *
  * Usage:
  *   DATABASE_URL=postgresql://... npx tsx scripts/seed.ts
@@ -8,6 +9,8 @@
 import { neon } from "@neondatabase/serverless";
 import { expensasData } from "../src/lib/data";
 import liquidacionesRaw from "../src/lib/liquidaciones.json";
+
+const GARIBALDI_BUILDING_ID = "b1e5d4a0-7f3c-4e2a-9d1b-6a8c3f0e2d5b";
 
 const liquidaciones = (
   liquidacionesRaw as { liquidaciones: Array<Record<string, unknown>> }
@@ -22,7 +25,7 @@ async function seed() {
 
   const sql = neon(url);
 
-  console.log(`Seeding ${expensasData.length} liquidaciones...`);
+  console.log(`Seeding ${expensasData.length} liquidaciones for Garibaldi 407...`);
 
   for (const md of expensasData) {
     const liq = liquidaciones.find(
@@ -40,13 +43,13 @@ async function seed() {
     const vencimiento = (liq?.vencimiento as string) ?? null;
 
     await sql`
-      INSERT INTO liquidaciones (month, label, total, expensas_a, uf_diez, items, periodo, vencimiento, cash_flow, prorrateo, egresos_por_seccion, aviso)
+      INSERT INTO liquidaciones (building_id, month, label, total, expensas_a, items, periodo, vencimiento, cash_flow, prorrateo, egresos_por_seccion, aviso)
       VALUES (
+        ${GARIBALDI_BUILDING_ID},
         ${md.month},
         ${md.label},
         ${md.total},
         ${md.expensasA},
-        ${md.ufDiez},
         ${JSON.stringify(md.items)}::jsonb,
         ${periodo},
         ${vencimiento},
@@ -55,11 +58,10 @@ async function seed() {
         ${egresosPorSeccion ? JSON.stringify(egresosPorSeccion) : null}::jsonb,
         ${aviso}
       )
-      ON CONFLICT (month) DO UPDATE SET
+      ON CONFLICT (building_id, month) DO UPDATE SET
         label = EXCLUDED.label,
         total = EXCLUDED.total,
         expensas_a = EXCLUDED.expensas_a,
-        uf_diez = EXCLUDED.uf_diez,
         items = EXCLUDED.items,
         periodo = EXCLUDED.periodo,
         vencimiento = EXCLUDED.vencimiento,

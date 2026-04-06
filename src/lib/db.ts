@@ -1,5 +1,9 @@
 import { neon } from "@neondatabase/serverless";
-import type { LiquidacionFull, ExpenseItem } from "@/types/expense";
+import type {
+  LiquidacionFull,
+  ExpenseItem,
+  Building,
+} from "@/types/expense";
 
 function sql() {
   if (!process.env.DATABASE_URL) {
@@ -12,17 +16,102 @@ export function isDbConfigured(): boolean {
   return !!process.env.DATABASE_URL;
 }
 
-export async function getLiquidaciones(): Promise<LiquidacionFull[]> {
+function generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // remove accents
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+// --- Buildings ---
+
+export async function getBuildings(): Promise<Building[]> {
   const query = sql();
   const rows = await query`
-    SELECT * FROM liquidaciones ORDER BY month ASC
+    SELECT * FROM buildings ORDER BY created_at ASC
   `;
   return rows.map((row) => ({
+    id: row.id as string,
+    slug: row.slug as string,
+    name: row.name as string,
+    address: row.address as string,
+    adminCompany: (row.admin_company as string) ?? undefined,
+    cuit: (row.cuit as string) ?? undefined,
+    createdAt: row.created_at ? String(row.created_at) : undefined,
+  }));
+}
+
+export async function getBuildingBySlug(
+  slug: string
+): Promise<Building | null> {
+  const query = sql();
+  const rows = await query`
+    SELECT * FROM buildings WHERE slug = ${slug} LIMIT 1
+  `;
+  if (rows.length === 0) return null;
+  const row = rows[0];
+  return {
+    id: row.id as string,
+    slug: row.slug as string,
+    name: row.name as string,
+    address: row.address as string,
+    adminCompany: (row.admin_company as string) ?? undefined,
+    cuit: (row.cuit as string) ?? undefined,
+    createdAt: row.created_at ? String(row.created_at) : undefined,
+  };
+}
+
+export async function createBuilding(data: {
+  name: string;
+  address: string;
+  adminCompany?: string;
+  cuit?: string;
+}): Promise<Building> {
+  const query = sql();
+  const id = crypto.randomUUID();
+  const slug = generateSlug(data.name);
+
+  await query`
+    INSERT INTO buildings (id, slug, name, address, admin_company, cuit)
+    VALUES (
+      ${id},
+      ${slug},
+      ${data.name},
+      ${data.address},
+      ${data.adminCompany ?? null},
+      ${data.cuit ?? null}
+    )
+  `;
+
+  return {
+    id,
+    slug,
+    name: data.name,
+    address: data.address,
+    adminCompany: data.adminCompany,
+    cuit: data.cuit,
+  };
+}
+
+// --- Liquidaciones ---
+
+export async function getLiquidaciones(
+  buildingId: string
+): Promise<LiquidacionFull[]> {
+  const query = sql();
+  const rows = await query`
+    SELECT * FROM liquidaciones
+    WHERE building_id = ${buildingId}
+    ORDER BY month ASC
+  `;
+  return rows.map((row) => ({
+    buildingId: row.building_id as string,
     month: row.month as string,
     label: row.label as string,
     total: Number(row.total),
     expensasA: Number(row.expensas_a),
-    ufDiez: Number(row.uf_diez),
     items: (row.items as ExpenseItem[]) ?? [],
     periodo: (row.periodo as string) ?? undefined,
     vencimiento: (row.vencimiento as string) ?? undefined,
@@ -34,16 +123,19 @@ export async function getLiquidaciones(): Promise<LiquidacionFull[]> {
   }));
 }
 
-export async function saveLiquidacion(data: LiquidacionFull): Promise<void> {
+export async function saveLiquidacion(
+  buildingId: string,
+  data: LiquidacionFull
+): Promise<void> {
   const query = sql();
   await query`
-    INSERT INTO liquidaciones (month, label, total, expensas_a, uf_diez, items, periodo, vencimiento, cash_flow, prorrateo, egresos_por_seccion, aviso)
+    INSERT INTO liquidaciones (building_id, month, label, total, expensas_a, items, periodo, vencimiento, cash_flow, prorrateo, egresos_por_seccion, aviso)
     VALUES (
+      ${buildingId},
       ${data.month},
       ${data.label},
       ${data.total},
       ${data.expensasA},
-      ${data.ufDiez},
       ${JSON.stringify(data.items)}::jsonb,
       ${data.periodo ?? null},
       ${data.vencimiento ?? null},
@@ -52,11 +144,10 @@ export async function saveLiquidacion(data: LiquidacionFull): Promise<void> {
       ${data.egresosPorSeccion ? JSON.stringify(data.egresosPorSeccion) : null}::jsonb,
       ${data.aviso ?? null}
     )
-    ON CONFLICT (month) DO UPDATE SET
+    ON CONFLICT (building_id, month) DO UPDATE SET
       label = EXCLUDED.label,
       total = EXCLUDED.total,
       expensas_a = EXCLUDED.expensas_a,
-      uf_diez = EXCLUDED.uf_diez,
       items = EXCLUDED.items,
       periodo = EXCLUDED.periodo,
       vencimiento = EXCLUDED.vencimiento,
