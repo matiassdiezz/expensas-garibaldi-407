@@ -115,9 +115,7 @@ export function CategoryOverview({ data }: CategoryOverviewProps) {
             </div>
 
             {/* Category table */}
-            <div className="flex-1 min-w-0">
-              <div className="overflow-x-auto">
-                <div className="min-w-[340px]">
+            <div className="flex-1 min-w-0 overflow-hidden">
                   <div className="grid grid-cols-[1fr_80px_45px_60px] gap-1 px-2 pb-2 text-xs text-muted-foreground font-medium">
                     <span>Rubro</span>
                     <span className="text-right">Acumulado</span>
@@ -175,7 +173,6 @@ export function CategoryOverview({ data }: CategoryOverviewProps) {
                     <span />
                   </div>
                 </div>
-              </div>
             </div>
           </div>
         </CardContent>
