@@ -172,7 +172,6 @@ export function CategoryOverview({ data }: CategoryOverviewProps) {
                     </span>
                     <span />
                   </div>
-                </div>
             </div>
           </div>
         </CardContent>
