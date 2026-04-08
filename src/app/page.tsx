@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getBuildings, isDbConfigured } from "@/lib/db";
 import type { Building } from "@/types/expense";
+import { BuildingMap } from "@/components/building-map";
 
 export default async function Home() {
   let buildings: Building[] = [];
@@ -26,6 +27,13 @@ export default async function Home() {
             Subi la liquidacion de tu edificio y mira a donde va tu plata.
           </p>
         </div>
+
+        {/* Map */}
+        {buildings.length > 0 && (
+          <div className="mb-10">
+            <BuildingMap buildings={buildings} />
+          </div>
+        )}
 
         {/* Building list */}
         {buildings.length > 0 && (
