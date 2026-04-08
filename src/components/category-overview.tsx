@@ -116,7 +116,7 @@ export function CategoryOverview({ data }: CategoryOverviewProps) {
 
             {/* Category table */}
             <div className="flex-1 min-w-0 overflow-hidden">
-                  <div className="grid grid-cols-[1fr_80px_45px_60px] gap-1 px-2 pb-2 text-xs text-muted-foreground font-medium">
+                  <div className="grid grid-cols-[1fr_100px_50px_65px] gap-x-3 px-2 pb-2 text-xs text-muted-foreground font-medium">
                     <span>Rubro</span>
                     <span className="text-right">Acumulado</span>
                     <span className="text-right">%</span>
@@ -125,7 +125,7 @@ export function CategoryOverview({ data }: CategoryOverviewProps) {
                   {rows.map((row) => (
                     <div
                       key={row.cat}
-                      className="grid grid-cols-[1fr_80px_45px_60px] gap-1 items-center rounded px-2 py-1.5 text-sm hover:bg-muted/50 transition-colors"
+                      className="grid grid-cols-[1fr_100px_50px_65px] gap-x-3 items-center rounded px-2 py-1.5 text-sm hover:bg-muted/50 transition-colors"
                     >
                       <span className="flex items-center gap-2 min-w-0">
                         <span
@@ -162,7 +162,7 @@ export function CategoryOverview({ data }: CategoryOverviewProps) {
                       </span>
                     </div>
                   ))}
-                  <div className="grid grid-cols-[1fr_80px_45px_60px] gap-1 px-2 py-2 border-t border-border mt-1 font-medium">
+                  <div className="grid grid-cols-[1fr_100px_50px_65px] gap-x-3 px-2 py-2 border-t border-border mt-1 font-medium">
                     <span className="text-sm">Total</span>
                     <span className="text-right font-mono text-sm">
                       {formatCurrency(totalEgresos)}
