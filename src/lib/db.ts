@@ -95,6 +95,55 @@ export async function createBuilding(data: {
   };
 }
 
+export interface BuildingSummary {
+  buildingId: string;
+  lastMonth: string;
+  lastLabel: string;
+  lastTotal: number;
+  prevTotal: number | null;
+  monthCount: number;
+}
+
+export async function getBuildingSummaries(): Promise<
+  Record<string, BuildingSummary>
+> {
+  const query = sql();
+  const rows = await query`
+    WITH ranked AS (
+      SELECT
+        building_id,
+        month,
+        label,
+        total,
+        ROW_NUMBER() OVER (PARTITION BY building_id ORDER BY month DESC) AS rn,
+        COUNT(*) OVER (PARTITION BY building_id) AS month_count
+      FROM liquidaciones
+    )
+    SELECT
+      r1.building_id,
+      r1.month AS last_month,
+      r1.label AS last_label,
+      r1.total AS last_total,
+      r2.total AS prev_total,
+      r1.month_count
+    FROM ranked r1
+    LEFT JOIN ranked r2 ON r1.building_id = r2.building_id AND r2.rn = 2
+    WHERE r1.rn = 1
+  `;
+  const result: Record<string, BuildingSummary> = {};
+  for (const row of rows) {
+    result[row.building_id as string] = {
+      buildingId: row.building_id as string,
+      lastMonth: row.last_month as string,
+      lastLabel: row.last_label as string,
+      lastTotal: Number(row.last_total),
+      prevTotal: row.prev_total != null ? Number(row.prev_total) : null,
+      monthCount: Number(row.month_count),
+    };
+  }
+  return result;
+}
+
 // --- Liquidaciones ---
 
 export async function getLiquidaciones(

@@ -24,7 +24,7 @@ export function BuildingMap({ buildings }: BuildingMapProps) {
 
   if (!mapReady) {
     return (
-      <div className="w-full h-[300px] rounded-xl border border-border bg-muted/30 animate-pulse" />
+      <div className="w-full h-[300px] rounded-xl border border-border bg-card animate-pulse" />
     );
   }
 
@@ -54,7 +54,7 @@ function MapInner({ buildings }: BuildingMapProps) {
 
   if (!L || !components) {
     return (
-      <div className="w-full h-[300px] rounded-xl border border-border bg-muted/30 animate-pulse" />
+      <div className="w-full h-[300px] rounded-xl border border-border bg-card animate-pulse" />
     );
   }
 
@@ -86,7 +86,7 @@ function MapInner({ buildings }: BuildingMapProps) {
         zoom={14}
         scrollWheelZoom={false}
         className="w-full h-[300px] rounded-xl border border-border z-0"
-        style={{ background: "#1a1a2e" }}
+        style={{ background: "#08090a" }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>'
