@@ -13,7 +13,9 @@ export interface ParsedItem {
   amount: number;
 }
 
-// Lines that should be skipped (headers, totals, structural elements)
+// Amounts below this are likely page numbers or reference codes, not expenses
+const MIN_AMOUNT = 10;
+
 const SKIP_PATTERNS = [
   /^total/i,
   /^sub\s*total/i,
@@ -72,10 +74,8 @@ export function parseExpenseItems(lines: string[]): ParsedItem[] {
     const extracted = extractLineAmount(trimmed);
     if (!extracted) continue;
 
-    // Skip very small amounts (likely page numbers or references)
-    if (extracted.amount < 10) continue;
+    if (extracted.amount < MIN_AMOUNT) continue;
 
-    // Classify category
     const category = classifyCategory(
       extracted.description,
       currentSection ?? undefined

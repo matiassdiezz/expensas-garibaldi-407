@@ -15,13 +15,16 @@ export interface PdfExtraction {
   rawText: string;
 }
 
+const Y_TOLERANCE = 3; // px — group text items on the same visual line
+const WORD_GAP_PX = 20; // gap threshold to insert tab vs space
+const APPROX_CHAR_WIDTH = 4; // rough px per character for gap estimation
+
 export async function extractText(
   arrayBuffer: ArrayBuffer
 ): Promise<PdfExtraction> {
   const pdfjsLib = await import("pdfjs-dist");
 
-  // Use CDN worker to avoid webpack/bundler issues
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
 
   const doc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
   const pages: PdfLine[][] = [];
@@ -41,10 +44,9 @@ export async function extractText(
       const x = tx[4];
       const y = Math.round(tx[5]); // round Y to group nearby items
 
-      // Find existing line within tolerance
       let matchedY: number | null = null;
       for (const existingY of lineMap.keys()) {
-        if (Math.abs(existingY - y) <= 3) {
+        if (Math.abs(existingY - y) <= Y_TOLERANCE) {
           matchedY = existingY;
           break;
         }
@@ -68,8 +70,8 @@ export async function extractText(
       let text = "";
       for (let j = 0; j < items.length; j++) {
         if (j > 0) {
-          const gap = items[j].x - (items[j - 1].x + items[j - 1].str.length * 4);
-          text += gap > 20 ? "    " : " ";
+          const gap = items[j].x - (items[j - 1].x + items[j - 1].str.length * APPROX_CHAR_WIDTH);
+          text += gap > WORD_GAP_PX ? "    " : " ";
         }
         text += items[j].str;
       }

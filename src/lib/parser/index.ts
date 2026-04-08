@@ -6,7 +6,7 @@
 import { extractText } from "./extract-text";
 import { detectMetadata } from "./detect-sections";
 import { parseExpenseItems } from "./parse-lines";
-import type { LiquidacionFull, ExpenseCategory } from "@/types/expense";
+import type { LiquidacionFull } from "@/types/expense";
 
 export interface ParseResult {
   data: Partial<LiquidacionFull>;
@@ -74,7 +74,7 @@ export async function parsePdfClientSide(file: File): Promise<ParseResult> {
     total: totalRounded,
     expensasA: Math.round(expensasA * 100) / 100,
     items: items.map((i) => ({
-      category: i.category as ExpenseCategory,
+      category: i.category,
       description: i.description,
       amount: Math.round(i.amount * 100) / 100,
     })),
@@ -103,20 +103,24 @@ export async function parsePdfClientSide(file: File): Promise<ParseResult> {
     };
   }
 
-  // 8. Calculate confidence
+  // 8. Calculate confidence (low < medium < high — never upgrade)
   let confidence: "high" | "medium" | "low" = "high";
-  if (!meta.month) confidence = "medium";
-  if (items.length < 3) confidence = "medium";
-  if (items.length === 0) confidence = "low";
-  if (extraction.allLines.length < 5) confidence = "low";
 
-  // Check for many "otros" items — might indicate poor category matching
+  const downgrade = (to: "medium" | "low") => {
+    if (to === "low" || confidence === "high") confidence = to;
+  };
+
+  if (!meta.month) downgrade("medium");
+  if (items.length < 3) downgrade("medium");
+  if (items.length === 0) downgrade("low");
+  if (extraction.allLines.length < 5) downgrade("low");
+
   const otrosCount = items.filter((i) => i.category === "otros").length;
   if (otrosCount > items.length * 0.5 && items.length > 3) {
     warnings.push(
       `${otrosCount} de ${items.length} items fueron clasificados como "otros". Revisá las categorías.`
     );
-    if (confidence === "high") confidence = "medium";
+    downgrade("medium");
   }
 
   return {

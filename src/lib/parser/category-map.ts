@@ -1,158 +1,31 @@
 import type { ExpenseCategory } from "@/types/expense";
 
-/**
- * Keyword → standard category mapping.
- * Keywords are matched case-insensitively against expense descriptions.
- * Order matters: first match wins.
- */
-const CATEGORY_KEYWORDS: Array<[ExpenseCategory, string[]]> = [
-  [
-    "sueldos",
-    [
-      "sueldo",
-      "jornal",
-      "haberes",
-      "sac ",
-      "aguinaldo",
-      "vacaciones",
-      "encargado",
-      "portero",
-      "porteria",
-    ],
-  ],
-  [
-    "cargas-sociales",
-    [
-      "afip",
-      "f.931",
-      "f 931",
-      "suss",
-      "fateryh",
-      "seracarh",
-      "suterh",
-      " art ",
-      "obra social",
-      "cargas sociales",
-      "aportes",
-      "contribuciones",
-      "sindicato",
-    ],
-  ],
-  [
-    "servicios-publicos",
-    [
-      "aysa",
-      "edenor",
-      "edesur",
-      "metrogas",
-      "naturgy",
-      "agua ",
-      " luz ",
-      " gas ",
-      "electricidad",
-      "energia",
-    ],
-  ],
-  [
-    "abonos-servicios",
-    [
-      "abono",
-      "fumigacion",
-      "fumigaciones",
-      "desinfeccion",
-      "jardineria",
-      "matafuegos",
-      "extincenter",
-      "antena",
-      "portones",
-      "desratizacion",
-      "proambiental",
-    ],
-  ],
-  [
-    "reparaciones",
-    [
-      "reparacion",
-      "obra ",
-      "arreglo",
-      "filtracion",
-      "restaurar",
-      "revoque",
-      "cloaca",
-      "destapacion",
-      "albañil",
-    ],
-  ],
-  [
-    "mantenimiento",
-    [
-      "pintura",
-      "pintureria",
-      "ferreteria",
-      "materiales",
-      "plomeria",
-      "plomero",
-      "cerrajeria",
-      "electricista",
-      "vidrio",
-      "vidriero",
-    ],
-  ],
-  [
-    "gastos-bancarios",
-    [
-      "comision",
-      "comisión",
-      "mantenimiento cuenta",
-      "ley 25413",
-      "imp. ley",
-      "debito",
-      "credito bancario",
-      "gastos bancarios",
-      "banco",
-    ],
-  ],
-  [
-    "seguros-gastos",
-    [
-      "seguro",
-      "met life",
-      "poliza",
-      "siniestro",
-      "aseguradora",
-      "federacion patronal",
-    ],
-  ],
-  [
-    "administracion",
-    ["honorarios", "administracion", "administración", "gestion"],
-  ],
-  [
-    "impuestos",
-    ["abl", "iibb", "municipal", "rentas", "tasa ", "impuesto", "agip"],
-  ],
-  [
-    "ascensores",
-    ["ascensor", "ascensores", "virs", "elevador"],
-  ],
-  [
-    "limpieza",
-    [
-      "limpieza",
-      "articulos de limpieza",
-      "productos limpieza",
-      "lavandina",
-    ],
-  ],
-  [
-    "extraordinarias",
-    ["extraordinari", "derrame", "cuota especial"],
-  ],
-  [
-    "fondo-reserva",
-    ["fondo de reserva", "reserva legal", "fondo reserva"],
-  ],
-];
+function normalize(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+// Pre-normalized at module load — avoids re-normalizing ~90 keywords per call
+const CATEGORY_KEYWORDS: Array<[ExpenseCategory, string[]]> = ([
+  ["sueldos", ["sueldo", "jornal", "haberes", "sac ", "aguinaldo", "vacaciones", "encargado", "portero", "porteria"]],
+  ["cargas-sociales", ["afip", "f.931", "f 931", "suss", "fateryh", "seracarh", "suterh", " art ", "obra social", "cargas sociales", "aportes", "contribuciones", "sindicato"]],
+  ["servicios-publicos", ["aysa", "edenor", "edesur", "metrogas", "naturgy", "agua ", " luz ", " gas ", "electricidad", "energia"]],
+  ["abonos-servicios", ["abono", "fumigacion", "fumigaciones", "desinfeccion", "jardineria", "matafuegos", "extincenter", "antena", "portones", "desratizacion", "proambiental"]],
+  ["reparaciones", ["reparacion", "obra ", "arreglo", "filtracion", "restaurar", "revoque", "cloaca", "destapacion", "albañil"]],
+  ["mantenimiento", ["pintura", "pintureria", "ferreteria", "materiales", "plomeria", "plomero", "cerrajeria", "electricista", "vidrio", "vidriero"]],
+  ["gastos-bancarios", ["comision", "comisión", "mantenimiento cuenta", "ley 25413", "imp. ley", "debito", "credito bancario", "gastos bancarios", "banco"]],
+  ["seguros-gastos", ["seguro", "met life", "poliza", "siniestro", "aseguradora", "federacion patronal"]],
+  ["administracion", ["honorarios", "administracion", "administración", "gestion"]],
+  ["impuestos", ["abl", "iibb", "municipal", "rentas", "tasa ", "impuesto", "agip"]],
+  ["ascensores", ["ascensor", "ascensores", "virs", "elevador"]],
+  ["limpieza", ["limpieza", "articulos de limpieza", "productos limpieza", "lavandina"]],
+  ["extraordinarias", ["extraordinari", "derrame", "cuota especial"]],
+  ["fondo-reserva", ["fondo de reserva", "reserva legal", "fondo reserva"]],
+] as Array<[ExpenseCategory, string[]]>).map(
+  ([cat, kws]) => [cat, kws.map(normalize)] as [ExpenseCategory, string[]]
+);
 
 /**
  * Section header patterns that map to categories.
@@ -173,38 +46,16 @@ const SECTION_PATTERNS: Array<[ExpenseCategory, RegExp]> = [
   ["otros", /^[A-Z]\)?\s*(gastos?\s+varios|gastos?\s+particulares)/i],
 ];
 
-function normalize(s: string): string {
-  return s
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
-}
-
-/**
- * Classify an expense description into one of the 15 standard categories.
- *
- * @param description - The expense line text
- * @param sectionHint - Optional section header text (e.g., "A) Sueldos y Cargas")
- */
 export function classifyCategory(
   description: string,
-  sectionHint?: string
+  sectionCategory?: ExpenseCategory
 ): ExpenseCategory {
-  // 1. Try section hint first
-  if (sectionHint) {
-    const normSection = normalize(sectionHint);
-    for (const [cat, pattern] of SECTION_PATTERNS) {
-      if (pattern.test(normSection) || pattern.test(sectionHint)) {
-        return cat;
-      }
-    }
-  }
+  if (sectionCategory) return sectionCategory;
 
-  // 2. Keyword match on description
   const normDesc = normalize(description);
   for (const [cat, keywords] of CATEGORY_KEYWORDS) {
     for (const kw of keywords) {
-      if (normDesc.includes(normalize(kw))) {
+      if (normDesc.includes(kw)) {
         return cat;
       }
     }

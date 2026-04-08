@@ -5,36 +5,19 @@
 
 import { parseArgAmount } from "./parse-amount";
 
-const MONTH_NAMES: Record<string, string> = {
-  enero: "01",
-  febrero: "02",
-  marzo: "03",
-  abril: "04",
-  mayo: "05",
-  junio: "06",
-  julio: "07",
-  agosto: "08",
-  septiembre: "09",
-  setiembre: "09",
-  octubre: "10",
-  noviembre: "11",
-  diciembre: "12",
-};
+const MONTHS = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+] as const;
 
-const MONTH_LABELS: Record<string, string> = {
-  "01": "Enero",
-  "02": "Febrero",
-  "03": "Marzo",
-  "04": "Abril",
-  "05": "Mayo",
-  "06": "Junio",
-  "07": "Julio",
-  "08": "Agosto",
-  "09": "Septiembre",
-  "10": "Octubre",
-  "11": "Noviembre",
-  "12": "Diciembre",
-};
+const MONTH_NAMES: Record<string, string> = Object.fromEntries([
+  ...MONTHS.map((m, i) => [m.toLowerCase(), String(i + 1).padStart(2, "0")]),
+  ["setiembre", "09"], // variant spelling
+]);
+
+const MONTH_LABELS: Record<string, string> = Object.fromEntries(
+  MONTHS.map((m, i) => [String(i + 1).padStart(2, "0"), m])
+);
 
 export interface DetectedMetadata {
   month: string | null; // "2026-03"
@@ -76,7 +59,8 @@ export function detectMetadata(lines: string[]): DetectedMetadata {
     aviso: null,
   };
 
-  const fullText = lines.join("\n").toLowerCase();
+  const hasLine = (keyword: string) =>
+    lines.some((l) => l.toLowerCase().includes(keyword));
 
   // --- Month detection ---
   const monthPatterns = [
@@ -133,9 +117,9 @@ export function detectMetadata(lines: string[]): DetectedMetadata {
 
   // --- Cash Flow ---
   if (
-    fullText.includes("saldo anterior") ||
-    fullText.includes("estado de caja") ||
-    fullText.includes("movimiento de fondos")
+    hasLine("saldo anterior") ||
+    hasLine("estado de caja") ||
+    hasLine("movimiento de fondos")
   ) {
     const cf = {
       saldoAnterior: null as number | null,
@@ -179,9 +163,9 @@ export function detectMetadata(lines: string[]): DetectedMetadata {
 
   // --- Prorrateo ---
   if (
-    fullText.includes("prorrateo") ||
-    fullText.includes("expensas a") ||
-    fullText.includes("total a pagar")
+    hasLine("prorrateo") ||
+    hasLine("expensas a") ||
+    hasLine("total a pagar")
   ) {
     const pr = {
       expensasA: null as number | null,
