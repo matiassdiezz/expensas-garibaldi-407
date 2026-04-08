@@ -5,7 +5,7 @@ import type { Building } from "@/types/expense";
 
 // Hardcoded coordinates for known buildings (from OpenStreetMap Nominatim)
 const BUILDING_COORDS: Record<string, [number, number]> = {
-  "garibaldi-407": [-34.4678, -58.5218],
+  "garibaldi-407": [-34.4729, -58.518],
   "laprida-195": [-34.4737, -58.5168],
   "alfaro-180": [-34.4801, -58.5045],
   "manzone-1039": [-34.481, -58.5029],
