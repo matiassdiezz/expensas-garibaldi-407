@@ -1,4 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) project for loading, parsing, and comparing building expense PDFs.
+
+## Importing PDFs
+
+The repo now supports two Node-native import flows without depending on `tsx`:
+
+### Single PDF
+
+```bash
+npm run load:pdf -- \
+  --pdf ./pdfs/alfaro-180/331-55-Octubre-2025-Planilla.pdf \
+  --building "Alfaro 180" \
+  --address "Alfaro 180, San Isidro" \
+  --admin "Administración Salgado"
+```
+
+### Folder of PDFs for one building
+
+```bash
+npm run load:folder -- \
+  --dir ./pdfs/alfaro-180 \
+  --building "Alfaro 180" \
+  --address "Alfaro 180, San Isidro" \
+  --admin "Administración Salgado"
+```
+
+Optional flags:
+
+- `--cuit <valor>`
+- `--dry-run` to parse without saving in Neon
+
+Both scripts auto-load `.env.local` from the repo root. They require:
+
+- `DATABASE_URL`
+- `ANTHROPIC_API_KEY`
+
+## JSON-first flow
+
+If you want the old Claude-reviewed workflow, use a two-step pipeline:
+
+### 1. Extract a folder of PDFs to `data.json`
+
+```bash
+npm run extract:json -- \
+  --dir ./pdfs/av-santa-fe-410 \
+  --building "Av. Santa Fe 410" \
+  --address "Av. Santa Fe 410, Acassuso, Buenos Aires" \
+  --admin "P. Tapia"
+```
+
+This writes `data.json` inside that folder by default.
+
+### 2. Seed from the reviewed JSON
+
+```bash
+npm run seed:json -- --json ./pdfs/av-santa-fe-410/data.json
+```
+
+Use `--dry-run` on `seed:json` to validate what would be imported without touching Neon.
 
 ## Getting Started
 

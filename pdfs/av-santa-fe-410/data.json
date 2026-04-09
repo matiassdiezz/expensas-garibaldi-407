@@ -1,0 +1,305 @@
+{
+  "_meta": {
+    "slug": "av-santa-fe-410",
+    "nombre": "Av. Santa Fe 410",
+    "direccion": "Av. Santa Fe 410, Acassuso, Buenos Aires",
+    "administracion": "Administracion Paulino Tapia",
+    "cuit": "20-04528102-8"
+  },
+  "liquidaciones": [
+    {
+      "liquidacion": "2025-10",
+      "label": "Octubre 2025",
+      "total": 23135407.16,
+      "expensasA": 20809185.61,
+      "items": [
+        {
+          "category": "sueldos",
+          "description": "Sueldos y aportes",
+          "amount": 10634416.03
+        },
+        {
+          "category": "otros",
+          "description": "Gastos A y reparaciones",
+          "amount": 9174769.58
+        },
+        {
+          "category": "mantenimiento",
+          "description": "Gastos B (locales/departamentos)",
+          "amount": 1855430.24
+        },
+        {
+          "category": "impuestos",
+          "description": "Gastos C y D (cocheras/subsuelo)",
+          "amount": 470791.31
+        },
+        {
+          "category": "extraordinarias",
+          "description": "Prevision",
+          "amount": 1000000
+        }
+      ],
+      "periodo": "Octubre 2025",
+      "vencimiento": "2025-11-11",
+      "prorrateo": {
+        "expensasA": 20809185.61,
+        "expensasB": 2326221.55,
+        "totalAPagar": 23135407.16
+      },
+      "egresosPorSeccion": {
+        "sueldos": 10634416.03,
+        "otros": 9174769.58,
+        "mantenimiento": 1855430.24,
+        "impuestos": 470791.31,
+        "extraordinarias": 1000000
+      },
+      "aviso": null,
+      "sourcePdf": "2025-10.pdf"
+    },
+    {
+      "liquidacion": "2025-11",
+      "label": "Noviembre 2025",
+      "total": 25427177.22,
+      "expensasA": 23051875,
+      "items": [
+        {
+          "category": "sueldos",
+          "description": "Sueldos y aportes",
+          "amount": 11145645.23
+        },
+        {
+          "category": "otros",
+          "description": "Gastos A y reparaciones",
+          "amount": 7006229.77
+        },
+        {
+          "category": "mantenimiento",
+          "description": "Gastos B (locales/departamentos)",
+          "amount": 1684402.48
+        },
+        {
+          "category": "impuestos",
+          "description": "Gastos C y D (cocheras/subsuelo)",
+          "amount": 690899.74
+        },
+        {
+          "category": "extraordinarias",
+          "description": "Prevision",
+          "amount": 4900000
+        }
+      ],
+      "periodo": "Noviembre 2025",
+      "vencimiento": "2025-12-10",
+      "prorrateo": {
+        "expensasA": 23051875,
+        "expensasB": 2375302.22,
+        "totalAPagar": 25427177.22
+      },
+      "egresosPorSeccion": {
+        "sueldos": 11145645.23,
+        "otros": 7006229.77,
+        "mantenimiento": 1684402.48,
+        "impuestos": 690899.74,
+        "extraordinarias": 4900000
+      },
+      "aviso": null,
+      "sourcePdf": "2025-11.pdf"
+    },
+    {
+      "liquidacion": "2025-12",
+      "label": "Diciembre 2025",
+      "total": 25434536.48,
+      "expensasA": 23052865.67,
+      "items": [
+        {
+          "category": "sueldos",
+          "description": "Sueldos y aportes",
+          "amount": 14905540.45
+        },
+        {
+          "category": "otros",
+          "description": "Gastos A y reparaciones",
+          "amount": 6147325.22
+        },
+        {
+          "category": "mantenimiento",
+          "description": "Gastos B (locales/departamentos)",
+          "amount": 1881720.66
+        },
+        {
+          "category": "impuestos",
+          "description": "Gastos C y D (cocheras/subsuelo)",
+          "amount": 499950.15
+        },
+        {
+          "category": "extraordinarias",
+          "description": "Prevision",
+          "amount": 2000000
+        }
+      ],
+      "periodo": "Diciembre 2025",
+      "vencimiento": "2026-01-12",
+      "prorrateo": {
+        "expensasA": 23052865.67,
+        "expensasB": 2381670.81,
+        "totalAPagar": 25434536.48
+      },
+      "egresosPorSeccion": {
+        "sueldos": 14905540.45,
+        "otros": 6147325.22,
+        "mantenimiento": 1881720.66,
+        "impuestos": 499950.15,
+        "extraordinarias": 2000000
+      },
+      "aviso": null,
+      "sourcePdf": "2025-12.pdf"
+    },
+    {
+      "liquidacion": "2026-01",
+      "label": "Enero 2026",
+      "total": 26863509.85,
+      "expensasA": 24593446.89,
+      "items": [
+        {
+          "category": "sueldos",
+          "description": "Sueldos y aportes",
+          "amount": 15205629.61
+        },
+        {
+          "category": "otros",
+          "description": "Gastos A y reparaciones",
+          "amount": 8387817.28
+        },
+        {
+          "category": "mantenimiento",
+          "description": "Gastos B (locales/departamentos)",
+          "amount": 1703998.68
+        },
+        {
+          "category": "impuestos",
+          "description": "Gastos C y D (cocheras/subsuelo)",
+          "amount": 566064.28
+        },
+        {
+          "category": "extraordinarias",
+          "description": "Prevision",
+          "amount": 1000000
+        }
+      ],
+      "periodo": "Enero 2026",
+      "vencimiento": "2026-02-10",
+      "prorrateo": {
+        "expensasA": 24593446.89,
+        "expensasB": 2270062.96,
+        "totalAPagar": 26863509.85
+      },
+      "egresosPorSeccion": {
+        "sueldos": 15205629.61,
+        "otros": 8387817.28,
+        "mantenimiento": 1703998.68,
+        "impuestos": 566064.28,
+        "extraordinarias": 1000000
+      },
+      "aviso": null,
+      "sourcePdf": "2026-01.pdf"
+    },
+    {
+      "liquidacion": "2026-02",
+      "label": "Febrero 2026",
+      "total": 25132246.52,
+      "expensasA": 21755596.08,
+      "items": [
+        {
+          "category": "sueldos",
+          "description": "Sueldos y aportes",
+          "amount": 13303474.5
+        },
+        {
+          "category": "otros",
+          "description": "Gastos A y reparaciones",
+          "amount": 7452121.58
+        },
+        {
+          "category": "mantenimiento",
+          "description": "Gastos B (locales/departamentos)",
+          "amount": 2526523.52
+        },
+        {
+          "category": "impuestos",
+          "description": "Gastos C y D (cocheras/subsuelo)",
+          "amount": 850126.92
+        },
+        {
+          "category": "extraordinarias",
+          "description": "Prevision",
+          "amount": 1000000
+        }
+      ],
+      "periodo": "Febrero 2026",
+      "vencimiento": "2026-03-10",
+      "prorrateo": {
+        "expensasA": 21755596.08,
+        "expensasB": 3376650.44,
+        "totalAPagar": 25132246.52
+      },
+      "egresosPorSeccion": {
+        "sueldos": 13303474.5,
+        "otros": 7452121.58,
+        "mantenimiento": 2526523.52,
+        "impuestos": 850126.92,
+        "extraordinarias": 1000000
+      },
+      "aviso": null,
+      "sourcePdf": "2026-02.pdf"
+    },
+    {
+      "liquidacion": "2026-03",
+      "label": "Marzo 2026",
+      "total": 25026001.38,
+      "expensasA": 17148355.11,
+      "items": [
+        {
+          "category": "sueldos",
+          "description": "Sueldos y aportes",
+          "amount": 13069626.49
+        },
+        {
+          "category": "otros",
+          "description": "Gastos A y reparaciones",
+          "amount": 3078728.62
+        },
+        {
+          "category": "mantenimiento",
+          "description": "Gastos B (locales/departamentos)",
+          "amount": 7300052.42
+        },
+        {
+          "category": "impuestos",
+          "description": "Gastos C y D (cocheras/subsuelo)",
+          "amount": 577593.85
+        },
+        {
+          "category": "extraordinarias",
+          "description": "Prevision",
+          "amount": 1000000
+        }
+      ],
+      "periodo": "Marzo 2026",
+      "vencimiento": "2026-04-10",
+      "prorrateo": {
+        "expensasA": 17148355.11,
+        "expensasB": 7877646.27,
+        "totalAPagar": 25026001.38
+      },
+      "egresosPorSeccion": {
+        "sueldos": 13069626.49,
+        "otros": 3078728.62,
+        "mantenimiento": 7300052.42,
+        "impuestos": 577593.85,
+        "extraordinarias": 1000000
+      },
+      "aviso": null,
+      "sourcePdf": "2026-03.pdf"
+    }
+  ]
+}

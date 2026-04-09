@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "load:pdf": "node scripts/load-pdf.mjs",
+    "load:folder": "node scripts/load-folder.mjs",
+    "extract:json": "node scripts/extract-json.mjs",
+    "seed:json": "node scripts/seed-json.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.82.0",
