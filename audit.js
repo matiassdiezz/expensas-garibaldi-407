@@ -72,6 +72,10 @@ function fail(msg) {
   console.log(`  ❌ ${msg}`);
 }
 
+function info(msg) {
+  console.log(`  ℹ️  ${msg}`);
+}
+
 function header(title) {
   console.log(`\n${"─".repeat(60)}`);
   console.log(`## ${title}`);
@@ -311,13 +315,14 @@ for (const liq of sortedLiqs) {
   const p = liq.prorrateo;
   const tsEntry = staticData.find((d) => d.month === m);
 
-  // 5a. expensasA + expensasB === totalAPagar
+  // 5a. expensasA + expensasB vs totalAPagar (informational — divergence is expected
+  //     because totalAPagar reflects credits/debits/punitorios per UF)
   const computedTotal = round2(p.expensasA + p.expensasB);
   if (approxEq(computedTotal, p.totalAPagar)) {
     pass(`${m}: prorrateo A(${p.expensasA.toLocaleString("es-AR")}) + B(${p.expensasB.toLocaleString("es-AR")}) = ${computedTotal.toLocaleString("es-AR")} ≈ totalAPagar(${p.totalAPagar.toLocaleString("es-AR")})`);
   } else {
-    fail(
-      `${m}: prorrateo A+B (${computedTotal.toLocaleString("es-AR")}) ≠ totalAPagar (${p.totalAPagar.toLocaleString("es-AR")}) — diff: ${round2(computedTotal - p.totalAPagar).toLocaleString("es-AR")}`
+    info(
+      `${m}: prorrateo A+B (${computedTotal.toLocaleString("es-AR")}) vs totalAPagar (${p.totalAPagar.toLocaleString("es-AR")}) — diff ${round2(computedTotal - p.totalAPagar).toLocaleString("es-AR")} (expected: créditos/punitorios por UF)`
     );
   }
 
@@ -334,19 +339,18 @@ for (const liq of sortedLiqs) {
 }
 
 // ─────────────────────────────────────────────
-// CHECK 6: ufDiez CONSISTENCY
+// CHECK 6: ITEMS SUM === total
 // ─────────────────────────────────────────────
-header("6. ufDiez / expensasA Consistency (6.40%)");
+header("6. Items Sum vs total");
 
 for (const tsEntry of staticData) {
   const m = tsEntry.month;
-  const expected = round2(tsEntry.expensasA * 0.064);
-  const actual = tsEntry.ufDiez;
-  if (approxEq(actual, expected, 100)) {
-    pass(`${m}: ufDiez(${actual.toLocaleString("es-AR")}) ≈ expensasA × 6.40% (${expected.toLocaleString("es-AR")})`);
+  const itemsSum = round2(tsEntry.items.reduce((a, it) => a + it.amount, 0));
+  if (approxEq(itemsSum, tsEntry.total, 1)) {
+    pass(`${m}: sum(items) ${itemsSum.toLocaleString("es-AR")} ≈ total ${tsEntry.total.toLocaleString("es-AR")}`);
   } else {
     fail(
-      `${m}: ufDiez(${actual.toLocaleString("es-AR")}) ≠ expensasA(${tsEntry.expensasA.toLocaleString("es-AR")}) × 6.40% = ${expected.toLocaleString("es-AR")} — diff: ${round2(actual - expected).toLocaleString("es-AR")}`
+      `${m}: sum(items) ${itemsSum.toLocaleString("es-AR")} ≠ total ${tsEntry.total.toLocaleString("es-AR")} — diff: ${round2(itemsSum - tsEntry.total).toLocaleString("es-AR")}`
     );
   }
 }
