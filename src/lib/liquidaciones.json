@@ -495,6 +495,39 @@
         }
       },
       "aviso": "De acuerdo a los gastos del edificio hubo que realizar el aumento de las expensas, es estrictamente para cubrir los gastos ordinarios de mantenimiento general, recarga de matafuegos, acondicionamiento de las luces de emergencia y otras luces. Queda una tercera cuota. Debemos continuar con el acondicionamiento del edificio. Estamos en conocimiento de la falta del portero. Se están pidiendo presupuestos también por ellos y por la pintura del palier interno del segundo cuerpo. Queda también el acondicionamiento exterior."
+    },
+    {
+      "liquidacion": "2026-05",
+      "periodo": "Abril 2026",
+      "vencimiento": "2026-05-10",
+      "cashFlow": {
+        "saldoAnterior": 82148.84,
+        "saldoAnteriorFecha": "2026-03-31",
+        "ingresos": 3675600.00,
+        "egresos": 3382868.06,
+        "extras": [],
+        "saldoFinal": 374880.78
+      },
+      "prorrateo": {
+        "expensasA": 3300000,
+        "expensasB": 0,
+        "totalAPagar": 3124383.00
+      },
+      "egresos": {
+        "total": 3382868.06,
+        "secciones": {
+          "A_sueldos": 309340.00,
+          "B_cargas_sociales": 550957.91,
+          "C_servicios_publicos": 76608.85,
+          "D_abonos_servicios": 1221803.27,
+          "E_mantenimiento": 716666.67,
+          "F_reparaciones": 0,
+          "G_gastos_bancarios": 123142.50,
+          "H_seguros_gastos": 164348.87,
+          "I_administracion": 220000.00
+        }
+      },
+      "aviso": "ALERTA: SE ESTÁN BUSCANDO ALTERNATIVAS PARA EL ARREGLO DEL ASCENSOR DEL PRIMER CUERPO. EL COSTO INICIAL DEL PROVEEDOR DE MANTENIMIENTO ES DE $6.200.000 + IVA. POR LO ELEVADO DE LA SUMA SE ESTÁN BUSCANDO OTROS PRESUPUESTOS Y SE CONVOCARÁ A ASAMBLEA PARA DEFINIR LA FORMA DE FINANCIAR LA OBRA. EL IMPACTO SERÁ MUY NEGATIVO PARA LA MAYORÍA DE LOS COPROPIETARIOS. UF 26 (DIEZ Gonzalo, 6.40%): cuota estimada ~$396.800 si se prorratea sin financiación."
     }
   ],
   "hallazgos_clave": {
